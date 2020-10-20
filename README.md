@@ -1,0 +1,1 @@
+# lock-composer-version
