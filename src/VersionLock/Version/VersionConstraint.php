@@ -2,8 +2,8 @@
 
 namespace PrinsFrank\ComposerVersionLock\VersionLock\Version;
 
-use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
+use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 
 class VersionConstraint
 {

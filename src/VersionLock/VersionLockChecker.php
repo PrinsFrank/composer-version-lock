@@ -19,11 +19,11 @@ class VersionLockChecker
     /** @var IoMessageProvider */
     private $messageProvider;
 
-    public function __construct(string $versionConstraint, IOInterface $io, IoMessageProvider $messageProvider)
+    public function __construct(string $constraintString, IOInterface $io, IoMessageProvider $messageProvider)
     {
         $this->io = $io;
         $this->messageProvider = $messageProvider;
-        $this->versionLock = new VersionLock($versionConstraint, Composer::VERSION);
+        $this->versionLock = new VersionLock($constraintString, Composer::VERSION);
     }
 
     public function execute(PreCommandRunEvent $event): void

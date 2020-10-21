@@ -5,6 +5,7 @@ namespace PrinsFrank\ComposerVersionLock\VersionLock\Output;
 use Composer\Composer;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
 use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
+use PrinsFrank\ComposerVersionLock\VersionLock\Version\SuggestedVersion;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
 
 class IoMessageProvider implements MessageProviderInterface
@@ -19,19 +20,20 @@ class IoMessageProvider implements MessageProviderInterface
     public function getWarningMessage(VersionLock $versionLock): array
     {
         return [
-            '<warning>This package expects composer version ' . $versionLock->getSuggestedVersion() . '</warning>',
+            '<warning>This package expects composer version ' . $versionLock->getRequiredVersion() . '</warning>',
             '<comment>-> Continuing as the current action isn\'t modifying the lock file.</comment>'
         ];
     }
 
     public function getErrorMessage(VersionLock $versionLock): array
     {
+        $suggestedVersion = SuggestedVersion::getForConstraintString($versionLock->getRequiredVersion());
         return [
-            '<error>This package requires composer version ' . $versionLock->getSuggestedVersion() .
+            '<error>This package requires composer version ' . $versionLock->getRequiredVersion() .
             ', Currently version is ' . $versionLock->getCurrentVersion() . '</error>',
             '<comment>To change to the required version, run;</comment>',
             '',
-            '    composer self-update ' . $versionLock->getSuggestedVersion(),
+            '    composer self-update ' . ($suggestedVersion ?? '{version} <comment>Recommended version could not be deduced</comment>'),
             ''
         ];
     }

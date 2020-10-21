@@ -23,13 +23,13 @@ class VersionLock
         return Semver::satisfies($this->currentVersion, $this->versionConstraint);
     }
 
-    public function getSuggestedVersion(): string
-    {
-        return $this->versionConstraint;
-    }
-
     public function getCurrentVersion(): string
     {
         return $this->currentVersion;
+    }
+
+    public function getRequiredVersion(): string
+    {
+        return $this->versionConstraint;
     }
 }
