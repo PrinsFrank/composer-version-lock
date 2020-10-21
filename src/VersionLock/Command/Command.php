@@ -17,8 +17,7 @@ class Command
     private const MODIFIES_LOCK = [
         self::UPDATE,
         self::REMOVE,
-        self::REQUIRE,
-        self::CONFIG
+        self::REQUIRE
     ];
 
     public static function modifiesLockFile(string $command): bool
