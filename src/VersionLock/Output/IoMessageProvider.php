@@ -13,14 +13,14 @@ class IoMessageProvider implements MessageProviderInterface
     public function getSuccessMessage(VersionLock $versionLock): array
     {
         return [
-            '<info>Your composer version is the same as the one set by the current package</info>'
+            '<info>Your composer version satisfies the required version set by the current package</info>'
         ];
     }
 
     public function getWarningMessage(VersionLock $versionLock): array
     {
         return [
-            '<warning>This package expects composer version ' . $versionLock->getRequiredVersion() . '</warning>',
+            '<warning>This package requires composer version ' . $versionLock->getRequiredVersion() . '</warning>',
             '<comment>-> Continuing as the current action isn\'t modifying the lock file.</comment>'
         ];
     }
