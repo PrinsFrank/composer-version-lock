@@ -28,6 +28,6 @@ class Command
 
     public static function isSettingExpectedComposerVersion(string $input): bool
     {
-        return strpos($input, "config '" . Schema::EXTRA_KEY . "." . Schema::EXPECTED_COMPOSER_VERSION_KEY . "'") === 0;
+        return strpos($input, "config '" . Schema::EXTRA_KEY . "." . Schema::COMPOSER_VERSION_CONSTRAINT_KEY . "'") === 0;
     }
 }

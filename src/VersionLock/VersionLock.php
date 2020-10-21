@@ -2,30 +2,30 @@
 
 namespace PrinsFrank\ComposerVersionLock\VersionLock;
 
-use Composer\Semver\Comparator;
+use Composer\Semver\Semver;
 
 class VersionLock
 {
     /** @var string */
-    private $expectedVersion;
+    private $versionConstraint;
 
     /** @var string */
     private $currentVersion;
 
-    public function __construct(string $expectedVersion, string $currentVersion)
+    public function __construct(string $versionConstraint, string $currentVersion)
     {
-        $this->expectedVersion = $expectedVersion;
+        $this->versionConstraint = $versionConstraint;
         $this->currentVersion = $currentVersion;
     }
 
-    public function isExpectedVersion(): bool
+    public function isSatisfiableVersion(): bool
     {
-        return Comparator::equalTo($this->expectedVersion, $this->currentVersion);
+        return Semver::satisfies($this->currentVersion, $this->versionConstraint);
     }
 
-    public function getRequiredVersion(): string
+    public function getSuggestedVersion(): string
     {
-        return $this->expectedVersion;
+        return $this->versionConstraint;
     }
 
     public function getCurrentVersion(): string

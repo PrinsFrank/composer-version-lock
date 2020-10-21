@@ -11,7 +11,7 @@ use Composer\Plugin\PreCommandRunEvent;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
-use PrinsFrank\ComposerVersionLock\VersionLock\Version\ExpectedVersion;
+use PrinsFrank\ComposerVersionLock\VersionLock\Version\VersionConstraint;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLockChecker;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
@@ -43,12 +43,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         try {
-            $expectedVersion = ExpectedVersion::getFromExtraConfig($this->composer->getPackage()->getExtra());
+            $versionConstraint = VersionConstraint::getFromExtraConfig($this->composer->getPackage()->getExtra());
         } catch (MissingConfigException $e) {
             $this->io->write((new IoMessageProvider())->getMissingConfigMessage());
             exit;
         }
 
-        (new VersionLockChecker($expectedVersion, $this->io, new IoMessageProvider()))->execute($event);
+        (new VersionLockChecker($versionConstraint, $this->io, new IoMessageProvider()))->execute($event);
     }
 }

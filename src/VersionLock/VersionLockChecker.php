@@ -3,13 +3,10 @@
 namespace PrinsFrank\ComposerVersionLock\VersionLock;
 
 use Composer\Composer;
-use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
-use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
-use PrinsFrank\ComposerVersionLock\VersionLock\Version\ExpectedVersion;
 
 class VersionLockChecker
 {
@@ -22,17 +19,17 @@ class VersionLockChecker
     /** @var IoMessageProvider */
     private $messageProvider;
 
-    public function __construct(string $expectedVersion, IOInterface $io, IoMessageProvider $messageProvider)
+    public function __construct(string $versionConstraint, IOInterface $io, IoMessageProvider $messageProvider)
     {
         $this->io = $io;
         $this->messageProvider = $messageProvider;
-        $this->versionLock = new VersionLock($expectedVersion, Composer::VERSION);
+        $this->versionLock = new VersionLock($versionConstraint, Composer::VERSION);
     }
 
     public function execute(PreCommandRunEvent $event): void
     {
-        if ($this->versionLock->isExpectedVersion()) {
-            $this->io->write($this->messageProvider->getValidVersionMessage($this->versionLock));
+        if ($this->versionLock->isSatisfiableVersion()) {
+            $this->io->write($this->messageProvider->getSuccessMessage($this->versionLock));
             return;
         }
 

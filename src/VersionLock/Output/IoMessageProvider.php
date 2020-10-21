@@ -9,7 +9,7 @@ use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
 
 class IoMessageProvider implements MessageProviderInterface
 {
-    public function getValidVersionMessage(VersionLock $versionLock): array
+    public function getSuccessMessage(VersionLock $versionLock): array
     {
         return [
             '<info>Your composer version is the same as the one set by the current package</info>'
@@ -19,7 +19,7 @@ class IoMessageProvider implements MessageProviderInterface
     public function getWarningMessage(VersionLock $versionLock): array
     {
         return [
-            '<warning>This package expects composer version ' . $versionLock->getRequiredVersion() . '</warning>',
+            '<warning>This package expects composer version ' . $versionLock->getSuggestedVersion() . '</warning>',
             '<comment>-> Continuing as the current action isn\'t modifying the lock file.</comment>'
         ];
     }
@@ -27,11 +27,11 @@ class IoMessageProvider implements MessageProviderInterface
     public function getErrorMessage(VersionLock $versionLock): array
     {
         return [
-            '<error>This package requires composer version ' . $versionLock->getRequiredVersion() .
+            '<error>This package requires composer version ' . $versionLock->getSuggestedVersion() .
             ', Currently version is ' . $versionLock->getCurrentVersion() . '</error>',
             '<comment>To change to the required version, run;</comment>',
             '',
-            '    composer self-update ' . $versionLock->getRequiredVersion(),
+            '    composer self-update ' . $versionLock->getSuggestedVersion(),
             ''
         ];
     }
@@ -42,7 +42,7 @@ class IoMessageProvider implements MessageProviderInterface
             '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set"</error>',
             '<comment>To use your current version as the new project default, execute;</comment>',
             '',
-            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::EXPECTED_COMPOSER_VERSION_KEY . ' ' . Composer::VERSION,
+            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY . ' ' . Composer::VERSION,
             ''
         ];
     }
