@@ -10,9 +10,9 @@ use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
+use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
 use PrinsFrank\ComposerVersionLock\VersionLock\Version\VersionConstraint;
-use PrinsFrank\ComposerVersionLock\VersionLock\Version\VersionConstraintFactory;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLockChecker;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
@@ -37,19 +37,30 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return [PluginEvents::PRE_COMMAND_RUN => 'onPreCommand'];
     }
 
+    /**
+     * @throws MissingConfigException
+     * @throws InvalidComposerVersionException
+     */
     public function onPreCommand(PreCommandRunEvent $event): void
     {
         if (Command::isSettingExpectedComposerVersion($event->getInput())) {
             return;
         }
 
-        try {
-            $constraintString = VersionConstraint::getFromExtraConfig($this->composer->getPackage()->getExtra());
-        } catch (MissingConfigException $e) {
+        $constraintString = VersionConstraint::getFromExtraConfig($this->composer->getPackage()->getExtra());
+        if ($constraintString === null) {
             $this->io->write((new IoMessageProvider())->getMissingConfigMessage());
-            exit;
+            throw new MissingConfigException('Composer version not set');
         }
 
         (new VersionLockChecker($constraintString, $this->io, new IoMessageProvider()))->execute($event);
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
     }
 }

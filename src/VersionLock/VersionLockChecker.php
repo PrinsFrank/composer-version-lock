@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
+use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
 
 class VersionLockChecker
@@ -26,6 +27,9 @@ class VersionLockChecker
         $this->versionLock = new VersionLock($constraintString, Composer::VERSION);
     }
 
+    /**
+     * @throws InvalidComposerVersionException
+     */
     public function execute(PreCommandRunEvent $event): void
     {
         if ($this->versionLock->isSatisfiableVersion()) {
@@ -35,7 +39,7 @@ class VersionLockChecker
 
         if (Command::modifiesLockFile($event->getCommand())) {
             $this->io->write($this->messageProvider->getErrorMessage($this->versionLock));
-            exit;
+            throw new InvalidComposerVersionException('Invalid Composer version');
         }
 
         $this->io->write($this->messageProvider->getWarningMessage($this->versionLock));
