@@ -123,6 +123,6 @@ class PluginTest extends TestCase
         $composer = $this->createMock(Composer::class);
         $composer->expects(self::never())->method(self::anything());
         $io = $this->createMock(ConsoleIO::class);
-        $plugin->deactivate($composer, $io);
+        $plugin->uninstall($composer, $io);
     }
 }
