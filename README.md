@@ -1,5 +1,10 @@
 # Composer version lock
 
+[![Code Coverage](https://codecov.io/gh/PrinsFrank/composer-version-lock/branch/main/graph/badge.svg)](https://codecov.io/gh/PrinsFrank/composer-version-lock)
+[![Release](https://img.shields.io/github/v/release/PrinsFrank/composer-version-lock?semver)](https://github.com/PrinsFrank/composer-version-lock/releases)
+[![License](https://img.shields.io/github/license/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/blob/main/LICENSE)
+[![Open Issues](https://img.shields.io/github/issues-raw/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/issues)
+
 ## Why this plugin?
 
 When working with many people in the same codebases, it sometimes is quite a hassle to resolve merge conflicts on the Composer lockfile.
