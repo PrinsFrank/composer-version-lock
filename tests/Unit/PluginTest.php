@@ -9,6 +9,7 @@ use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PreCommandRunEvent;
 use PHPUnit\Framework\TestCase;
 use PrinsFrank\ComposerVersionLock\Plugin;
+use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 
 /**
@@ -27,7 +28,7 @@ class PluginTest extends TestCase
     /**
      * @covers ::activate
      * @covers ::onPreCommand
-     * @throws MissingConfigException
+     * @throws MissingConfigException|InvalidComposerVersionException
      */
     public function testOnPreCommandReturnsWhenSettingComposerVersionConfig(): void
     {
@@ -76,7 +77,7 @@ class PluginTest extends TestCase
     /**
      * @covers ::activate
      * @covers ::onPreCommand
-     * @throws MissingConfigException
+     * @throws MissingConfigException|InvalidComposerVersionException
      */
     public function testOnPreCommandWritesToIoWhenPassing(): void
     {
@@ -99,5 +100,29 @@ class PluginTest extends TestCase
             ]
         );
         $plugin->onPreCommand($event);
+    }
+
+    /**
+     * @covers ::deactivate
+     */
+    public function testDeactivate(): void
+    {
+        $plugin = new Plugin();
+        $composer = $this->createMock(Composer::class);
+        $composer->expects(self::never())->method(self::anything());
+        $io = $this->createMock(ConsoleIO::class);
+        $plugin->deactivate($composer, $io);
+    }
+
+    /**
+     * @covers ::uninstall
+     */
+    public function testUninstall(): void
+    {
+        $plugin = new Plugin();
+        $composer = $this->createMock(Composer::class);
+        $composer->expects(self::never())->method(self::anything());
+        $io = $this->createMock(ConsoleIO::class);
+        $plugin->uninstall($composer, $io);
     }
 }
