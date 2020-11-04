@@ -8,12 +8,13 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
+use Composer\Semver\Semver;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
-use PrinsFrank\ComposerVersionLock\VersionLock\Version\VersionConstraint;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLockChecker;
+use PrinsFrank\ComposerVersionLock\VersionLock\VersionLockFactory;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -47,13 +48,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        $constraintString = VersionConstraint::getFromExtraConfig($this->composer->getPackage()->getExtra());
-        if ($constraintString === null) {
+        $versionLockConfig = VersionLockFactory::createFromComposerInstance($this->composer);
+        if ($versionLockConfig->getVersionConstraint() === null) {
             $this->io->write((new IoMessageProvider())->getMissingConfigMessage());
-            throw new MissingConfigException('Composer version not set');
+            throw new MissingConfigException('Composer version constraint is not set');
         }
 
-        (new VersionLockChecker($constraintString, $this->io, new IoMessageProvider()))->execute($event);
+        if (!Semver::satisfies($versionLockConfig->getSuggestedVersion(), $versionLockConfig->getVersionConstraint())) {
+            $this->io->write((new IoMessageProvider())->getIncorrectSuggestedVersionMessage($versionLockConfig));
+            throw new InvalidComposerVersionException('The suggested version is not correct according the version constraint');
+        }
+
+        (new VersionLockChecker($this->io, new IoMessageProvider()))->execute($event, $versionLockConfig);
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void

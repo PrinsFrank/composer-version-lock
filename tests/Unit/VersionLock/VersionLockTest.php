@@ -12,13 +12,13 @@ class VersionLockTest extends TestCase
 {
     /**
      * @covers ::__construct
-     * @covers ::getRequiredVersion
+     * @covers ::getVersionConstraint
      * @covers ::getCurrentVersion
      */
     public function testProperties(): void
     {
         $versionLock = new VersionLock('1.10.15', '1.10.14');
-        static::assertSame('1.10.15', $versionLock->getRequiredVersion());
+        static::assertSame('1.10.15', $versionLock->getVersionConstraint());
         static::assertSame('1.10.14', $versionLock->getCurrentVersion());
     }
 

@@ -11,28 +11,28 @@ use PrinsFrank\ComposerVersionLock\VersionLock\Version\SuggestedVersion;
 class SuggestedVersionTest extends TestCase
 {
     /**
-     * @covers ::getForConstraintString
+     * @covers ::getFromConstraintString
      */
     public function testGetForConstraintStringWhenSimpleConstraint(): void
     {
-        static::assertSame('1.10.15', SuggestedVersion::getForConstraintString('1.10.15'));
+        static::assertSame('1.10.15', SuggestedVersion::getFromConstraintString('1.10.15'));
     }
 
     /**
-     * @covers ::getForConstraintString
+     * @covers ::getFromConstraintString
      */
     public function testGetForConstraintStringWhenCaretOrTildeConstraint(): void
     {
-        static::assertSame('1.10.15', SuggestedVersion::getForConstraintString('~1.10.15'));
-        static::assertSame('1.10.15', SuggestedVersion::getForConstraintString('^1.10.15'));
+        static::assertSame('1.10.15', SuggestedVersion::getFromConstraintString('~1.10.15'));
+        static::assertSame('1.10.15', SuggestedVersion::getFromConstraintString('^1.10.15'));
     }
 
     /**
-     * @covers ::getForConstraintString
+     * @covers ::getFromConstraintString
      */
     public function testGetForConstraintStringWhenOtherConstraint(): void
     {
-        static::assertNull(SuggestedVersion::getForConstraintString('1.10.14 || 1.10.15'));
-        static::assertNull(SuggestedVersion::getForConstraintString('1.10.14 - 1.10.15'));
+        static::assertNull(SuggestedVersion::getFromConstraintString('1.10.14 || 1.10.15'));
+        static::assertNull(SuggestedVersion::getFromConstraintString('1.10.14 - 1.10.15'));
     }
 }
