@@ -17,7 +17,7 @@ class VersionLockTest extends TestCase
      */
     public function testProperties(): void
     {
-        $versionLock = new VersionLock('1.10.15', '1.10.14');
+        $versionLock = new VersionLock('1.10.14', '1.10.15');
         static::assertSame('1.10.15', $versionLock->getVersionConstraint());
         static::assertSame('1.10.14', $versionLock->getCurrentVersion());
     }
@@ -27,14 +27,14 @@ class VersionLockTest extends TestCase
      */
     public function testIsSatisfiableVersion(): void
     {
-        static::assertFalse((new VersionLock('1.10.15', '1.10.14'))->isSatisfiableVersion());
         static::assertFalse((new VersionLock('1.10.14', '1.10.15'))->isSatisfiableVersion());
+        static::assertFalse((new VersionLock('1.10.15', '1.10.14'))->isSatisfiableVersion());
 
         static::assertTrue((new VersionLock('1.10.15', '1.10.15'))->isSatisfiableVersion());
-        static::assertTrue((new VersionLock('^1.10.14', '1.10.15'))->isSatisfiableVersion());
-        static::assertTrue((new VersionLock('~1.10.14', '1.10.15'))->isSatisfiableVersion());
-        static::assertTrue((new VersionLock('1.10.*', '1.10.15'))->isSatisfiableVersion());
-        static::assertTrue((new VersionLock('^1', '1.10.15'))->isSatisfiableVersion());
-        static::assertTrue((new VersionLock('*', '1.10.15'))->isSatisfiableVersion());
+        static::assertTrue((new VersionLock('1.10.15', '^1.10.14'))->isSatisfiableVersion());
+        static::assertTrue((new VersionLock('1.10.15', '~1.10.14'))->isSatisfiableVersion());
+        static::assertTrue((new VersionLock('1.10.15', '1.10.*'))->isSatisfiableVersion());
+        static::assertTrue((new VersionLock('1.10.15', '^1'))->isSatisfiableVersion());
+        static::assertTrue((new VersionLock('1.10.15', '*'))->isSatisfiableVersion());
     }
 }

@@ -37,7 +37,7 @@ class IoMessageProviderTest extends TestCase
                 '<warning>This package requires composer version 1.10.15</warning>',
                 '<comment>-> Continuing as the current action isn\'t modifying the lock file.</comment>'
             ],
-            $provider->getWarningMessage(new VersionLock('1.10.15', '1.10.14'))
+            $provider->getWarningMessage(new VersionLock('1.10.14', '1.10.15'))
         );
     }
 
@@ -56,7 +56,7 @@ class IoMessageProviderTest extends TestCase
                 '    composer self-update 1.10.15',
                 ''
             ],
-            $provider->getErrorMessage(new VersionLock('1.10.15', '1.10.14'))
+            $provider->getErrorMessage(new VersionLock('1.10.14', '1.10.15'))
         );
     }
 
@@ -75,7 +75,7 @@ class IoMessageProviderTest extends TestCase
                 '    composer self-update {version} <comment>Recommended version could not be deduced</comment>',
                 ''
             ],
-            $provider->getErrorMessage(new VersionLock('1.10.14 || 1.10.15', '1.10.13'))
+            $provider->getErrorMessage(new VersionLock('1.10.13', '1.10.14 || 1.10.15'))
         );
     }
 

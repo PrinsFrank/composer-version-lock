@@ -52,8 +52,8 @@ class PluginTest extends TestCase
         $plugin = new Plugin();
         $composer = $this->createMock(Composer::class);
         $package = $this->createMock(RootPackage::class);
-        $package->expects(self::once())->method('getExtra')->willReturn([]);
-        $composer->expects(self::once())->method('getPackage')->willReturn($package);
+        $package->expects(self::exactly(2))->method('getExtra')->willReturn([]);
+        $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
@@ -70,7 +70,7 @@ class PluginTest extends TestCase
             ]
         );
         $this->expectException(MissingConfigException::class);
-        $this->expectExceptionMessage('Composer version not set');
+        $this->expectExceptionMessage('Composer version constraint is not set');
         $plugin->onPreCommand($event);
     }
 
@@ -84,8 +84,8 @@ class PluginTest extends TestCase
         $plugin = new Plugin();
         $composer = $this->createMock(Composer::class);
         $package = $this->createMock(RootPackage::class);
-        $package->expects(self::once())->method('getExtra')->willReturn(['composer-version' => '1.0.0']);
-        $composer->expects(self::once())->method('getPackage')->willReturn($package);
+        $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '1.0.0']);
+        $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 

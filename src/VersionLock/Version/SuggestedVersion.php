@@ -11,7 +11,7 @@ class SuggestedVersion
         return $extra[Schema::COMPOSER_SUGGESTED_VERSION_KEY] ?? null;
     }
 
-    public static function getFromConstraintString(string $constraintString): ?string
+    public static function getFromConstraintString(?string $constraintString): ?string
     {
         if (preg_match('/[ ,!=<>*^-~]/', $constraintString) === 0) {
             return $constraintString;
