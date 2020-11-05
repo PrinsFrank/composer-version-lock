@@ -67,3 +67,16 @@ When the developer is using a Composer version that satisfies the constraint, th
 ```sh
 Your composer version satisfies the required version set by the current package 
 ```
+
+## Options
+
+### Suggested version
+
+When using a version constraint that has multiple valid versions, you might want to suggest a specific version.
+For example, when using the version constraint `1.10.14 || 1.10.15`, this plugin doesn't know what version to suggest as either of them is a valid version. When you specifically want to suggest `1.10.15`, you can do that by setting the `composer-suggest` extra key using the following command:
+
+```sh
+composer config extra.composer-suggest {VERSION}
+```
+
+> When a suggested version is set, but it it is not correct according to the version constraint, you will get a console error and the plugin will prevent any further actions until you resolve this issue. Either set a correct suggested version or remove the suggested version. 
