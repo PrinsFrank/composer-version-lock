@@ -14,6 +14,7 @@ class VersionLockTest extends TestCase
      * @covers ::__construct
      * @covers ::getVersionConstraint
      * @covers ::getCurrentVersion
+     * @covers ::getSuggestedVersion
      */
     public function testProperties(): void
     {
