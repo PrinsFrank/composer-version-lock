@@ -63,7 +63,7 @@ class PluginTest extends TestCase
 
         $io->expects(self::once())->method('write')->with(
             [
-                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set"</error>',
+                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
                 '<comment>To use your current version as the new project default, execute;</comment>',
                 '',
                 '    composer config extra.composer-version ' . Composer::VERSION,

@@ -10,6 +10,10 @@
         <testsuite name="Unit">
             <directory>./tests/Unit</directory>
         </testsuite>
+        <testsuite name="Functional">
+            <!-- When executing all tests and the vendor folder is symlinked as well, an infinite loop will occur -->
+            <file>./tests/Functional/VersionConstraintTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
