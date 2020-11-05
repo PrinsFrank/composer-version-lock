@@ -20,6 +20,22 @@ class VersionLockTest extends TestCase
         $versionLock = new VersionLock('1.10.14', '1.10.15');
         static::assertSame('1.10.15', $versionLock->getVersionConstraint());
         static::assertSame('1.10.14', $versionLock->getCurrentVersion());
+        static::assertNull($versionLock->getSuggestedVersion());
+
+        $versionLock = new VersionLock('1.10.14', '1.10.15', null);
+        static::assertSame('1.10.15', $versionLock->getVersionConstraint());
+        static::assertSame('1.10.14', $versionLock->getCurrentVersion());
+        static::assertNull($versionLock->getSuggestedVersion());
+
+        $versionLock = new VersionLock('1.10.14', '1.10.15');
+        static::assertSame('1.10.15', $versionLock->getVersionConstraint());
+        static::assertSame('1.10.14', $versionLock->getCurrentVersion());
+        static::assertSame('1.10.15', $versionLock->getSuggestedVersion());
+
+        $versionLock = new VersionLock('1.10.14', '1.10.14 || 1.10.15', '1.10.15');
+        static::assertSame('1.10.15', $versionLock->getVersionConstraint());
+        static::assertSame('1.10.14', $versionLock->getCurrentVersion());
+        static::assertSame('1.10.15', $versionLock->getSuggestedVersion());
     }
 
     /**

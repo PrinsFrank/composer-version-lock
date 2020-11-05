@@ -46,6 +46,7 @@ class PluginTest extends TestCase
     /**
      * @covers ::activate
      * @covers ::onPreCommand
+     * @throws InvalidComposerVersionException
      */
     public function testOnPreCommandWritesToIoOnMissingConfig(): void
     {
@@ -71,6 +72,38 @@ class PluginTest extends TestCase
         );
         $this->expectException(MissingConfigException::class);
         $this->expectExceptionMessage('Composer version constraint is not set');
+        $plugin->onPreCommand($event);
+    }
+
+    /**
+     * @covers ::activate
+     * @covers ::onPreCommand
+     * @throws MissingConfigException
+     */
+    public function testOnPreCommandWritesToIoOnIncorrectSuggestedVersion(): void
+    {
+        $plugin = new Plugin();
+        $composer = $this->createMock(Composer::class);
+        $package = $this->createMock(RootPackage::class);
+        $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '1.0.0', 'composer-suggest' => '2.0.0']);
+        $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
+        $io = $this->createMock(ConsoleIO::class);
+        $plugin->activate($composer, $io);
+
+        $event = $this->createMock(PreCommandRunEvent::class);
+        $event->expects(self::once())->method('getInput')->willReturn("install");
+
+        $io->expects(self::once())->method('write')->with(
+            [
+                '<error>The suggested version "2.0.0" does not satisfy the version constraint "1.0.0"</error>',
+                '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
+                '',
+                '    composer config extra.composer-suggest {version} ',
+                ''
+            ]
+        );
+        $this->expectException(InvalidComposerVersionException::class);
+        $this->expectExceptionMessage('The suggested version is not correct according the version constraint');
         $plugin->onPreCommand($event);
     }
 

@@ -96,4 +96,22 @@ class IoMessageProviderTest extends TestCase
             $provider->getMissingConfigMessage()
         );
     }
+
+    /**
+     * @covers ::getIncorrectSuggestedVersionMessage
+     */
+    public function testGenIncorrectSuggestedVersionMessage(): void
+    {
+        $provider = new IoMessageProvider();
+        static::assertSame(
+            [
+                '<error>The suggested version "1.10.16" does not satisfy the version constraint "1.10.14 || 1.10.15"</error>',
+                '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
+                '',
+                '    composer config extra.composer-suggest {version} ',
+                ''
+            ],
+            $provider->getIncorrectSuggestedVersionMessage(new VersionLock('1.10.13', '1.10.14 || 1.10.15', '1.10.16'))
+        );
+    }
 }
