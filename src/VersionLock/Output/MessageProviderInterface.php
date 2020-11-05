@@ -13,4 +13,6 @@ interface MessageProviderInterface
     public function getErrorMessage(VersionLock $versionLock): array;
 
     public function getMissingConfigMessage(): array;
+
+    public function getIncorrectSuggestedVersionMessage(VersionLock $versionLock): array;
 }
