@@ -59,7 +59,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::once())->method('getInput')->willReturn("update");
+        $event->expects(self::exactly(2))->method('getInput')->willReturn("update");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -91,7 +91,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::once())->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(2))->method('getInput')->willReturn("install");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -123,7 +123,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::once())->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(2))->method('getInput')->willReturn("install");
         $event->expects(self::once())->method('getCommand')->willReturn('install');
 
         $io->expects(self::once())->method('write')->with(

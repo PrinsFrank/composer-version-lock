@@ -44,7 +44,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPreCommand(PreCommandRunEvent $event): void
     {
-        if (Command::isSettingExpectedComposerVersion($event->getInput())) {
+        if (Command::isSettingExpectedComposerVersion($event->getInput())
+            || Command::isSettingSuggestedComposerVersion($event->getInput())) {
             return;
         }
 
