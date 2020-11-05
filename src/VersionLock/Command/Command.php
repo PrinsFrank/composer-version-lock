@@ -29,4 +29,9 @@ class Command
     {
         return strpos($input, "config '" . Schema::EXTRA_KEY . "." . Schema::COMPOSER_VERSION_CONSTRAINT_KEY . "'") === 0;
     }
+
+    public static function isSettingSuggestedComposerVersion(string $input): bool
+    {
+        return strpos($input, "config '" . Schema::EXTRA_KEY . "." . Schema::COMPOSER_SUGGESTED_VERSION_KEY . "'") === 0;
+    }
 }

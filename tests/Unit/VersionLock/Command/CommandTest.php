@@ -34,4 +34,16 @@ class CommandTest extends TestCase
         static::assertFalse(Command::isSettingExpectedComposerVersion("config"));
         static::assertFalse(Command::isSettingExpectedComposerVersion("install"));
     }
+
+    /**
+     * @covers ::isSettingSuggestedComposerVersion
+     */
+    public function testIsSettingSuggestedComposerVersion(): void
+    {
+        static::assertTrue(Command::isSettingSuggestedComposerVersion("config 'extra.composer-suggest'"));
+
+        static::assertFalse(Command::isSettingSuggestedComposerVersion("config 'extra.fooBar'"));
+        static::assertFalse(Command::isSettingSuggestedComposerVersion("config"));
+        static::assertFalse(Command::isSettingSuggestedComposerVersion("install"));
+    }
 }
