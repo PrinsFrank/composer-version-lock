@@ -15,7 +15,12 @@
         "composer/composer": "^2.0"
     },
     "scripts": {
-        "test": "phpunit"
+        "test": [
+            "@test:unit",
+            "@test:functional"
+        ],
+        "test:unit": "phpunit --testsuite Unit",
+        "test:functional": "phpunit --testsuite Functional"
     },
     "autoload": {
         "psr-4": {

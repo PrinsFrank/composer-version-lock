@@ -1,0 +1,19 @@
+{
+    "name": "foo/bar",
+    "description": "no version set",
+    "type": "metapackage",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "require": {
+        "prinsfrank/composer-version-lock": "*"
+    },
+    "extra": {
+        "composer-version": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../"
+        }
+    ]
+}

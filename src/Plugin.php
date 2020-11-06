@@ -55,7 +55,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             throw new MissingConfigException('Composer version constraint is not set');
         }
 
-        if (!Semver::satisfies($versionLockConfig->getSuggestedVersion(), $versionLockConfig->getVersionConstraint())) {
+        if ($versionLockConfig->getSuggestedVersion() !== null
+            && !Semver::satisfies($versionLockConfig->getSuggestedVersion(), $versionLockConfig->getVersionConstraint())) {
             $this->io->write((new IoMessageProvider())->getIncorrectSuggestedVersionMessage($versionLockConfig));
             throw new InvalidComposerVersionException('The suggested version is not correct according the version constraint');
         }

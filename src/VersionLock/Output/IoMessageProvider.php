@@ -39,7 +39,7 @@ class IoMessageProvider implements MessageProviderInterface
     public function getMissingConfigMessage(): array
     {
         return [
-            '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set"</error>',
+            '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
             '<comment>To use your current version as the new project default, execute;</comment>',
             '',
             '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY . ' ' . Composer::VERSION,
@@ -53,7 +53,7 @@ class IoMessageProvider implements MessageProviderInterface
             '<error>The suggested version "' . $versionLock->getSuggestedVersion() . '" does not satisfy the version constraint "' . $versionLock->getVersionConstraint() . '"</error>',
             '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
             '',
-            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY . ' {version} ',
+            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY . ' {version}',
             ''
         ];
     }

@@ -87,7 +87,7 @@ class IoMessageProviderTest extends TestCase
         $provider = new IoMessageProvider();
         static::assertSame(
             [
-                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set"</error>',
+                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
                 '<comment>To use your current version as the new project default, execute;</comment>',
                 '',
                 '    composer config extra.composer-version ' . Composer::VERSION,
@@ -108,7 +108,7 @@ class IoMessageProviderTest extends TestCase
                 '<error>The suggested version "1.10.16" does not satisfy the version constraint "1.10.14 || 1.10.15"</error>',
                 '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
                 '',
-                '    composer config extra.composer-suggest {version} ',
+                '    composer config extra.composer-suggest {version}',
                 ''
             ],
             $provider->getIncorrectSuggestedVersionMessage(new VersionLock('1.10.13', '1.10.14 || 1.10.15', '1.10.16'))
