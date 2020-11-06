@@ -80,3 +80,14 @@ composer config extra.composer-suggest {VERSION}
 ```
 
 > When a suggested version is set, but it it is not correct according to the version constraint, you will get a console error and the plugin will prevent any further actions until you resolve this issue. Either set a correct suggested version or remove the suggested version. 
+
+## Version update strategies
+
+### Implementing a "grace period"
+
+When you have a main/master branch that is locked to a specific version of Composer - for example `2.0.5` - and a couple of feature branches that recently have been branched from master, you might run into issues where upgrading the Composer version on master results in you having to switch Composer versions every time you switch between the master and feature branches.
+
+A good strategy here can be to use a grace period as follows:
+0. The initial version constraint is `2.0.5`
+1. Add the old and new versions seperated by two pipe characters as the new version constraint: `2.0.5 || 2.0.6`.
+2. After a while the version constraint for both the old and new versions should live in all branches. You can now require the new version `2.0.6`
