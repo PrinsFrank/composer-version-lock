@@ -53,7 +53,7 @@ class IoMessageProvider implements MessageProviderInterface
             '<error>The suggested version "' . $versionLock->getSuggestedVersion() . '" does not satisfy the version constraint "' . $versionLock->getVersionConstraint() . '"</error>',
             '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
             '',
-            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY . ' {version} ',
+            '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY . ' {version}',
             ''
         ];
     }

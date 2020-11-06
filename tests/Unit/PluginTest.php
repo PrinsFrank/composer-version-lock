@@ -98,7 +98,7 @@ class PluginTest extends TestCase
                 '<error>The suggested version "2.0.0" does not satisfy the version constraint "1.0.0"</error>',
                 '<comment>Please update the suggested version to one that satisfies the constraint or remove the suggested version</comment>',
                 '',
-                '    composer config extra.composer-suggest {version} ',
+                '    composer config extra.composer-suggest {version}',
                 ''
             ]
         );
