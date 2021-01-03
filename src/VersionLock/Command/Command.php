@@ -2,18 +2,16 @@
 
 namespace PrinsFrank\ComposerVersionLock\VersionLock\Command;
 
+use PrinsFrank\ComposerVersionLock\VersionLock\Config\Package;
 use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
 
 class Command
 {
-    public const UPDATE = 'update';
-    public const REMOVE = 'remove';
+    public const UPDATE  = 'update';
+    public const REMOVE  = 'remove';
     public const REQUIRE = 'require';
-    public const CONFIG = 'config';
+    public const CONFIG  = 'config';
 
-    /**
-     * @var array What commands update the composer.lock file
-     */
     private const MODIFIES_LOCK = [
         self::UPDATE,
         self::REMOVE,
@@ -33,5 +31,10 @@ class Command
     public static function isSettingSuggestedComposerVersion(string $input): bool
     {
         return strpos($input, "config '" . Schema::EXTRA_KEY . "." . Schema::COMPOSER_SUGGESTED_VERSION_KEY . "'") === 0;
+    }
+
+    public static function isRemovingVersionLockPlugin(string $input): bool
+    {
+        return strpos($input, static::REMOVE . " '" . Package::NAME . "'") === 0;
     }
 }

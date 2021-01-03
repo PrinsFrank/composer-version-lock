@@ -27,7 +27,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
-        $this->io = $io;
+        $this->io       = $io;
     }
 
     /**
@@ -45,7 +45,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPreCommand(PreCommandRunEvent $event): void
     {
         if (Command::isSettingExpectedComposerVersion($event->getInput())
-            || Command::isSettingSuggestedComposerVersion($event->getInput())) {
+            || Command::isSettingSuggestedComposerVersion($event->getInput())
+            || Command::isRemovingVersionLockPlugin($event->getInput())) {
             return;
         }
 
