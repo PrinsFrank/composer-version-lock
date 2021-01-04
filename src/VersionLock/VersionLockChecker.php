@@ -18,7 +18,7 @@ class VersionLockChecker
 
     public function __construct(IOInterface $io, IoMessageProvider $messageProvider)
     {
-        $this->io = $io;
+        $this->io              = $io;
         $this->messageProvider = $messageProvider;
     }
 

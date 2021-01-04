@@ -76,7 +76,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function uninstall(Composer $composer, IOInterface $io): void
     {
         // Remove the composer version and suggest from the extra section in the composer file
-        $configFile = new JsonFile(Factory::getComposerFile(), null, $this->io);
+        $configFile   = new JsonFile(Factory::getComposerFile(), null, $this->io);
         $configSource = new JsonConfigSource($configFile);
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);

@@ -19,8 +19,8 @@ class VersionLock
     public function __construct(string $currentVersion, ?string $versionConstraint, ?string $suggestedVersion = null)
     {
         $this->versionConstraint = $versionConstraint;
-        $this->currentVersion = $currentVersion;
-        $this->suggestedVersion = $suggestedVersion ?? SuggestedVersion::getFromConstraintString($this->getVersionConstraint());
+        $this->currentVersion    = $currentVersion;
+        $this->suggestedVersion  = $suggestedVersion ?? SuggestedVersion::getFromConstraintString($this->getVersionConstraint());
     }
 
     public function isSatisfiableVersion(): bool

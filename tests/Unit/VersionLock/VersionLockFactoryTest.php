@@ -20,12 +20,12 @@ class VersionLockFactoryTest extends TestCase
     public function testCreateFromComposerInstance(): void
     {
         $composer = $this->createMock(Composer::class);
-        $package = $this->createMock(RootPackage::class);
+        $package  = $this->createMock(RootPackage::class);
         $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $package->expects(self::exactly(2))->method('getExtra')->willReturn(
             [
                 Schema::COMPOSER_VERSION_CONSTRAINT_KEY => '1.10.15',
-                Schema::COMPOSER_SUGGESTED_VERSION_KEY => '1.10.16'
+                Schema::COMPOSER_SUGGESTED_VERSION_KEY  => '1.10.16'
             ]
         );
 
