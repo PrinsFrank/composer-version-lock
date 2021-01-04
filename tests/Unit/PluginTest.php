@@ -32,9 +32,9 @@ class PluginTest extends TestCase
      */
     public function testOnPreCommandReturnsWhenSettingComposerVersionConfig(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
-        $io = $this->createMock(ConsoleIO::class);
+        $io       = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
@@ -50,16 +50,16 @@ class PluginTest extends TestCase
      */
     public function testOnPreCommandWritesToIoOnMissingConfig(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
-        $package = $this->createMock(RootPackage::class);
+        $package  = $this->createMock(RootPackage::class);
         $package->expects(self::exactly(2))->method('getExtra')->willReturn([]);
         $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::exactly(2))->method('getInput')->willReturn("update");
+        $event->expects(self::exactly(3))->method('getInput')->willReturn("update");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -82,16 +82,16 @@ class PluginTest extends TestCase
      */
     public function testOnPreCommandWritesToIoOnIncorrectSuggestedVersion(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
-        $package = $this->createMock(RootPackage::class);
+        $package  = $this->createMock(RootPackage::class);
         $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '1.0.0', 'composer-suggest' => '2.0.0']);
         $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::exactly(2))->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -114,16 +114,16 @@ class PluginTest extends TestCase
      */
     public function testOnPreCommandWritesToIoWhenPassing(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
-        $package = $this->createMock(RootPackage::class);
+        $package  = $this->createMock(RootPackage::class);
         $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '1.0.0']);
         $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
         $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::exactly(2))->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
         $event->expects(self::once())->method('getCommand')->willReturn('install');
 
         $io->expects(self::once())->method('write')->with(
@@ -140,7 +140,7 @@ class PluginTest extends TestCase
      */
     public function testDeactivate(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
         $composer->expects(self::never())->method(self::anything());
         $io = $this->createMock(ConsoleIO::class);
@@ -152,7 +152,7 @@ class PluginTest extends TestCase
      */
     public function testUninstall(): void
     {
-        $plugin = new Plugin();
+        $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
         $composer->expects(self::never())->method(self::anything());
         $io = $this->createMock(ConsoleIO::class);

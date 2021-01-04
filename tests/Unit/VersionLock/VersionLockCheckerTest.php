@@ -23,9 +23,9 @@ class VersionLockCheckerTest extends TestCase
      */
     public function testExecuteWithCorrectVersion(): void
     {
-        $io = $this->createMock(ConsoleIO::class);
+        $io              = $this->createMock(ConsoleIO::class);
         $messageProvider = $this->createMock(IoMessageProvider::class);
-        $checker = new VersionLockChecker($io, $messageProvider);
+        $checker         = new VersionLockChecker($io, $messageProvider);
 
         $event = $this->createMock(PreCommandRunEvent::class);
         $messageProvider->expects(self::once())->method('getSuccessMessage')->willReturn(['fooBar']);
@@ -38,9 +38,9 @@ class VersionLockCheckerTest extends TestCase
      */
     public function testExecuteWithInCorrectVersionUpdatingCommand(): void
     {
-        $io = $this->createMock(ConsoleIO::class);
+        $io              = $this->createMock(ConsoleIO::class);
         $messageProvider = $this->createMock(IoMessageProvider::class);
-        $checker = new VersionLockChecker($io, $messageProvider);
+        $checker         = new VersionLockChecker($io, $messageProvider);
 
         $event = $this->createMock(PreCommandRunEvent::class);
         $event->expects(self::once())->method('getCommand')->willReturn('update');
@@ -57,9 +57,9 @@ class VersionLockCheckerTest extends TestCase
      */
     public function testExecuteWithInCorrectVersionNonUpdatingCommand(): void
     {
-        $io = $this->createMock(ConsoleIO::class);
+        $io              = $this->createMock(ConsoleIO::class);
         $messageProvider = $this->createMock(IoMessageProvider::class);
-        $checker = new VersionLockChecker($io, $messageProvider);
+        $checker         = new VersionLockChecker($io, $messageProvider);
 
         $event = $this->createMock(PreCommandRunEvent::class);
         $event->expects(self::once())->method('getCommand')->willReturn('install');

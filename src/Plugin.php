@@ -3,13 +3,17 @@
 namespace PrinsFrank\ComposerVersionLock;
 
 use Composer\Composer;
+use Composer\Config\JsonConfigSource;
 use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Factory;
 use Composer\IO\IOInterface;
+use Composer\Json\JsonFile;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use Composer\Semver\Semver;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
+use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
@@ -27,7 +31,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
-        $this->io = $io;
+        $this->io       = $io;
     }
 
     /**
@@ -45,7 +49,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPreCommand(PreCommandRunEvent $event): void
     {
         if (Command::isSettingExpectedComposerVersion($event->getInput())
-            || Command::isSettingSuggestedComposerVersion($event->getInput())) {
+            || Command::isSettingSuggestedComposerVersion($event->getInput())
+            || Command::isRemovingVersionLockPlugin($event->getInput())) {
             return;
         }
 
@@ -70,5 +75,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
+        // Remove the composer version and suggest from the extra section in the composer file
+        $configFile   = new JsonFile(Factory::getComposerFile(), null, $this->io);
+        $configSource = new JsonConfigSource($configFile);
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
+
+        if (count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
+            $configSource->removeProperty(Schema::EXTRA_KEY);
+        }
     }
 }

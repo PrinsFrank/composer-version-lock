@@ -91,3 +91,5 @@ A good strategy here can be to use a grace period as follows:
 1. The initial version constraint is `2.0.5`
 2. Add the old and new versions seperated by two pipe characters as the new version constraint: `2.0.5 || 2.0.6`.
 3. After a while the version constraint for both the old and new versions should live in all branches. You can now require the new version `2.0.6`
+
+> When the plugin is removed with the command ```composer remove prinsfrank/composer-version-lock```, the ```composer-version``` and ```composer-suggest``` settings in the ```extra``` section in the composer.json are also cleaned up. When the remaining extra section is then empty, it is removed.
