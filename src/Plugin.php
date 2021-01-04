@@ -13,6 +13,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use Composer\Semver\Semver;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
+use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
@@ -74,17 +75,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
+        // Remove the composer version and suggest from the extra section in the composer file
         $configFile = new JsonFile(Factory::getComposerFile(), null, $this->io);
-        if (($configFile->read()['extra']['composer-version'] ?? null) === null) {
-            return; // The Composer version constraint was not set yet, so no cleanup is needed
-        }
-
-        // Remove the composer version from the extra section in the composer file
         $configSource = new JsonConfigSource($configFile);
-        if (count($configFile->read()['extra']) === 1) {
-            $configSource->removeProperty('extra');
-        } else {
-            $configSource->removeProperty('extra.composer-version');
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
+
+        if (count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
+            $configSource->removeProperty(Schema::EXTRA_KEY);
         }
     }
 }
