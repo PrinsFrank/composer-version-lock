@@ -21,11 +21,15 @@ to include this package, simply run;
 composer require prinsfrank/composer-version-lock
 ```
 
+![](docs/images/require-package.gif)
+
 To set the required composer version for your project, run;
 
 ```sh
 composer config extra.composer-version {VERSION_CONSTRAINT}
 ```
+
+![](docs/images/set-version.gif)
 
 Any [Composer constraint](https://getcomposer.org/doc/articles/versions.md#versions-and-constraints) can be used as the ```composer/semver``` package is used to determine if the current composer version satisfies the version constraint.
 
@@ -43,30 +47,21 @@ Some of the composer commands change the ```composer.lock```:
 
 Whenever a developer executes any of the above commands with a Composer version that doesn't satisfy the version constraint, they will get the following error, with the command aborting:
 
-```sh
-This package requires composer version 1.10.15, Currently version is 1.10.14
-To change to the required version, run;
+![](docs/images/invalid-version.gif)
 
-    composer self-update 1.10.15
-
-```
 > **Note:** When the version constraint is not an exact version or a next significant operator it is not possible to deduce a matching version so ```composer self-update {version}``` is displayed instead.
 
 ### Commands that don't change the lock file
 
 When the developer executes any other command without a satisfiable version, they will just get a warning, with Composer continuing:
 
-```sh
-This package expects composer version 1.10.15
--> Continuing as the current action isn't modifying the lock file.
-```
+![](docs/images/incorrect-version-continuing.gif)
 
 ### Information when using the correct version
 
 When the developer is using a Composer version that satisfies the constraint, the following message will be displayed:
-```sh
-Your composer version satisfies the required version set by the current package 
-```
+
+![](docs/images/valid-version.gif)
 
 ## Options
 
