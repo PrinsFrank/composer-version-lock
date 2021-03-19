@@ -81,7 +81,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
 
-        if (count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
+        if (array_key_exists(Schema::EXTRA_KEY, $configFile->read())
+            && count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
             $configSource->removeProperty(Schema::EXTRA_KEY);
         }
     }
