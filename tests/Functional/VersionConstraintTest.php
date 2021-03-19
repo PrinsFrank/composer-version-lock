@@ -2,7 +2,6 @@
 
 namespace PrinsFrank\ComposerVersionLock\Tests\Functional;
 
-use Composer\Composer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,7 +14,7 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
-        preg_match('/\d+.\d+.\d/', shell_exec('composer --version'), $matches);
+        preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
         $this->currentVersion = $matches[0] ?? null;
     }
 
