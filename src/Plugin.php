@@ -8,6 +8,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
@@ -39,14 +40,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
+        if (defined(PluginEvents::class . '::PRE_COMMAND_RUN') === false) {
+            return [PluginEvents::COMMAND => 'onPreCommand']; // Before 1.7.0 the PreCommandRun event doesn't exist
+        }
+
         return [PluginEvents::PRE_COMMAND_RUN => 'onPreCommand'];
     }
 
     /**
      * @throws MissingConfigException
      * @throws InvalidComposerVersionException
+     * @param CommandEvent|PreCommandRunEvent before version 1.7.0 the PreCommandRunEvent didn't exist
      */
-    public function onPreCommand(PreCommandRunEvent $event): void
+    public function onPreCommand($event): void
     {
         if (Command::isSettingExpectedComposerVersion($event->getInput())
             || Command::isSettingSuggestedComposerVersion($event->getInput())
