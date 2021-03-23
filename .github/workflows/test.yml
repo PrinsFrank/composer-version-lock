@@ -7,12 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  validate-composer-file:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Validate composer.json and composer.lock
         run: composer validate
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        composer-version: [1.7.0, 2.0.0]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Set Composer version to run tests with
+        run: composer require ${{ matrix.composer-version }}
+      - name: Run Unit tests
+        run: vendor/bin/phpunit --testsuite Unit
+      - name: Run Functional tests
+        run: vendor/bin/phpunit --testsuite Functional
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Run Unit tests
@@ -23,5 +42,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           flags: tests
-      - name: Run Functional tests
-        run: vendor/bin/phpunit --testsuite Functional
