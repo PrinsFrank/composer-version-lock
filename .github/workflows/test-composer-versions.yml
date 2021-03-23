@@ -7,11 +7,19 @@ on:
     branches: [ main ]
 
 jobs:
+  get-all-available-composer-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "::set-output name=matrix::{1.7.0, 2.0.0}"
   test:
-    runs-on: ubuntu-16.04
+    needs: get-all-available-composer-versions
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        composer-version: [1.7.0, 2.0.0]
+        composer-version: ${{fromJson(needs.job1.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP version
