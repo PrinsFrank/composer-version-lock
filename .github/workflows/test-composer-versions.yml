@@ -13,7 +13,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "::set-output name=matrix::{1.7.0, 2.0.0}"
+        run: echo "::set-output name=matrix::{[\"1.7.0\", \"2.0.0\"]}"
   test:
     needs: get-all-available-composer-versions
     runs-on: ubuntu-latest
