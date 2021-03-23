@@ -124,7 +124,7 @@ class PluginTest extends TestCase
         $plugin   = new Plugin();
         $composer = $this->createMock(Composer::class);
         $package  = $this->createMock(RootPackage::class);
-        $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '1.0.0']);
+        $package->expects(self::exactly(2))->method('getExtra')->willReturn(['composer-version' => '0.0.9']);
         $composer->expects(self::exactly(2))->method('getPackage')->willReturn($package);
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
@@ -135,7 +135,7 @@ class PluginTest extends TestCase
 
         $io->expects(self::once())->method('write')->with(
             [
-                '<warning>This package requires composer version 1.0.0</warning>',
+                '<warning>This package requires composer version 0.0.9</warning>',
                 '<comment>-> Continuing as the current action isn\'t modifying the lock file.</comment>'
             ]
         );
