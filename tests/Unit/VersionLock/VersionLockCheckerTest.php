@@ -4,8 +4,10 @@ namespace PrinsFrank\ComposerVersionLock\Tests\Unit\VersionLock;
 
 use Composer\Composer;
 use Composer\IO\ConsoleIO;
+use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PreCommandRunEvent;
 use PHPUnit\Framework\TestCase;
+use PrinsFrank\ComposerVersionLock\Tests\Helpers\EventHelper;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Output\IoMessageProvider;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
@@ -27,7 +29,7 @@ class VersionLockCheckerTest extends TestCase
         $messageProvider = $this->createMock(IoMessageProvider::class);
         $checker         = new VersionLockChecker($io, $messageProvider);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
+        $event = EventHelper::getEventMock();
         $messageProvider->expects(self::once())->method('getSuccessMessage')->willReturn(['fooBar']);
         $io->expects(self::once())->method('write')->with(['fooBar']);
         $checker->execute($event, new VersionLock(Composer::VERSION, Composer::VERSION));
@@ -42,8 +44,8 @@ class VersionLockCheckerTest extends TestCase
         $messageProvider = $this->createMock(IoMessageProvider::class);
         $checker         = new VersionLockChecker($io, $messageProvider);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::once())->method('getCommand')->willReturn('update');
+        $event = EventHelper::getEventMock();
+        $event->expects(self::once())->method(EventHelper::getGetCommandName())->willReturn('update');
         $messageProvider->expects(self::once())->method('getErrorMessage')->willReturn(['fooBar']);
         $io->expects(self::once())->method('write')->with(['fooBar']);
         $this->expectException(InvalidComposerVersionException::class);
@@ -61,8 +63,8 @@ class VersionLockCheckerTest extends TestCase
         $messageProvider = $this->createMock(IoMessageProvider::class);
         $checker         = new VersionLockChecker($io, $messageProvider);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
-        $event->expects(self::once())->method('getCommand')->willReturn('install');
+        $event = EventHelper::getEventMock();
+        $event->expects(self::once())->method(EventHelper::getGetCommandName())->willReturn('install');
         $messageProvider->expects(self::once())->method('getWarningMessage')->willReturn(['fooBar']);
         $io->expects(self::once())->method('write')->with(['fooBar']);
         $checker->execute($event, new VersionLock(Composer::VERSION, '0.0.1'));
