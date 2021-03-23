@@ -36,13 +36,12 @@ class VersionLockChecker
             return;
         }
 
-        if (defined(Composer::class . '::RUNTIME_API_VERSION')
-            && Semver::satisfies(Composer::RUNTIME_API_VERSION, '^1.0 || ^2.0')) {
-            /** @var PreCommandRunEvent $eventName */
-            $eventName = $event->getCommand();
-        }else {
+        if ($event instanceof CommandEvent) {
             /** @var CommandEvent $eventName */
             $eventName = $event->getCommandName();
+        }else {
+            /** @var PreCommandRunEvent $eventName */
+            $eventName = $event->getCommand();
         }
 
         if (Command::modifiesLockFile($eventName)) {
