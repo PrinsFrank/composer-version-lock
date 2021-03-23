@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        composer-version: ${{fromJson(needs.job1.outputs.matrix)}}
+        composer-version: ${{fromJson(needs.get-all-available-composer-versions.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP version
