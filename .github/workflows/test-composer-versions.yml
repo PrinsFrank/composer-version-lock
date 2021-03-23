@@ -11,14 +11,13 @@ jobs:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
-        php-version: [7.0]
         composer-version: [1.7.0, 2.0.0]
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP version
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: 7.0 # Currently supported by all Composer versions
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Set Composer version to specific version to test with
