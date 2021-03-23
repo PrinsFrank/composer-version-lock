@@ -17,7 +17,7 @@ jobs:
       - name: Setup PHP version
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.0 # Currently supported by all Composer versions
+          php-version: 7.2 # Currently supported by all Composer versions
       - name: Set Composer version to specific version to test with
         run: composer require composer/composer:${{ matrix.composer-version }} --dev
       - name: Run Unit tests
