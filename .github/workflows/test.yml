@@ -22,8 +22,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-      - name: Set Composer version to run tests with
-        run: composer require ${{ matrix.composer-version }}
+      - name: Set Composer version to specific version to test with
+        run: composer require composer/composer:${{ matrix.composer-version }} --dev
       - name: Run Unit tests
         run: vendor/bin/phpunit --testsuite Unit
       - name: Run Functional tests
