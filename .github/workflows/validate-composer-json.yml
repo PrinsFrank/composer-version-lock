@@ -1,4 +1,4 @@
-name: Test
+name: Validate the composer.json file
 
 on:
   push:
