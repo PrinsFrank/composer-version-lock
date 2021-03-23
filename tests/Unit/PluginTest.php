@@ -5,10 +5,12 @@ namespace PrinsFrank\ComposerVersionLock\Tests\Unit;
 use Composer\Composer;
 use Composer\IO\ConsoleIO;
 use Composer\Package\RootPackage;
+use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PreCommandRunEvent;
 use PHPUnit\Framework\TestCase;
 use PrinsFrank\ComposerVersionLock\Plugin;
+use PrinsFrank\ComposerVersionLock\Tests\Helpers\EventHelper;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 
@@ -22,6 +24,11 @@ class PluginTest extends TestCase
      */
     public function testGetSubscribedEvents(): void
     {
+        if (defined(PluginEvents::class . '::PRE_COMMAND_RUN') === false) {
+            static::assertSame([PluginEvents::COMMAND => 'onPreCommand'], Plugin::getSubscribedEvents());
+            return;
+        }
+
         static::assertSame([PluginEvents::PRE_COMMAND_RUN => 'onPreCommand'], Plugin::getSubscribedEvents());
     }
 
@@ -37,7 +44,7 @@ class PluginTest extends TestCase
         $io       = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
+        $event = EventHelper::getEventMock();
         $event->expects(self::once())->method('getInput')->willReturn("config 'extra.composer-version'");
         $plugin->onPreCommand($event);
         $this->addToAssertionCount(1);
@@ -58,7 +65,7 @@ class PluginTest extends TestCase
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
+        $event = EventHelper::getEventMock();
         $event->expects(self::exactly(3))->method('getInput')->willReturn("update");
 
         $io->expects(self::once())->method('write')->with(
@@ -90,7 +97,7 @@ class PluginTest extends TestCase
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
+        $event = EventHelper::getEventMock();
         $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
 
         $io->expects(self::once())->method('write')->with(
@@ -122,9 +129,9 @@ class PluginTest extends TestCase
         $io = $this->createMock(ConsoleIO::class);
         $plugin->activate($composer, $io);
 
-        $event = $this->createMock(PreCommandRunEvent::class);
+        $event = EventHelper::getEventMock();
         $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
-        $event->expects(self::once())->method('getCommand')->willReturn('install');
+        $event->expects(self::once())->method(EventHelper::getGetCommandName())->willReturn('install');
 
         $io->expects(self::once())->method('write')->with(
             [
