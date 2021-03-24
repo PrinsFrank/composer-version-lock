@@ -76,7 +76,7 @@ class VersionConstraintTest extends TestCase
     {
         $this->runInstall($scenarioName = 'clean-up');
         static::assertSame(
-            json_encode([
+            [
                 'name' => 'foo/bar',
                 'description' => 'Clean up',
                 'type' => 'metapackage',
@@ -95,12 +95,15 @@ class VersionConstraintTest extends TestCase
                         'url' => '../../../'
                     ]
                 ]
-            ], JSON_PRETTY_PRINT ^ JSON_UNESCAPED_SLASHES),
-            file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
+            ],
+            json_decode(
+                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
+                true
+            )
         );
         $this->runRemoveCommand($scenarioName);
         static::assertSame(
-            json_encode([
+            [
                 'name' => 'foo/bar',
                 'description' => 'Clean up',
                 'type' => 'metapackage',
@@ -115,8 +118,11 @@ class VersionConstraintTest extends TestCase
                         'url' => '../../../'
                     ]
                 ]
-            ], JSON_PRETTY_PRINT ^ JSON_UNESCAPED_SLASHES),
-            file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
+            ],
+            json_decode(
+                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
+                true
+            )
         );
     }
 
