@@ -27,6 +27,8 @@ jobs:
           php-version: 7.2 # Currently supported by all Composer versions
       - name: Set Composer version to specific version to test with
         run: composer self-update ${{ matrix.composer-version }}
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
       - name: Run Unit tests
         run: vendor/bin/phpunit --testsuite Unit
       - name: Run Functional tests
