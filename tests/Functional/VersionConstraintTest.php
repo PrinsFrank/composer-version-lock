@@ -72,6 +72,54 @@ class VersionConstraintTest extends TestCase
         );
     }
 
+    public function testCleansUpWhenRemovingPackage(): void
+    {
+        $this->runInstall($scenarioName = 'clean-up');
+        static::assertSame(
+            json_encode([
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require' => [
+                    'prinsfrank/composer-version-lock' => '*'
+                ],
+                'extra' => [
+                    'composer-version' => '*',
+                    'composer-suggest' => '2.0.10'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ]),
+            file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
+        );
+        $this->runRemoveCommand($scenarioName);
+        static::assertSame(
+            json_encode([
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require' => [
+                    'prinsfrank/composer-version-lock' => '*'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ]),
+            file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
+        );
+    }
+
     private function runInstall(string $scenarioName): void
     {
         $command = 'cd ' . __DIR__ . '/scenarios ' .
@@ -90,5 +138,10 @@ class VersionConstraintTest extends TestCase
     private function runSafeCommand(string $scenarioName)
     {
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate 2>/dev/null');
+    }
+
+    private function runRemoveCommand(string $scenarioName)
+    {
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock 2>/dev/null');
     }
 }
