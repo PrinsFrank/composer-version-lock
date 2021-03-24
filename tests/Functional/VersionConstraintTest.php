@@ -109,9 +109,6 @@ class VersionConstraintTest extends TestCase
                 'type' => 'metapackage',
                 'minimum-stability' => 'dev',
                 'license' => 'MIT',
-                'require' => [
-                    'prinsfrank/composer-version-lock' => '*'
-                ],
                 'repositories' => [
                     [
                         'type' => 'path',
