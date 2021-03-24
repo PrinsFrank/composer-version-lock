@@ -95,7 +95,7 @@ class VersionConstraintTest extends TestCase
                         'url' => '../../../'
                     ]
                 ]
-            ]),
+            ], JSON_PRETTY_PRINT ^ JSON_UNESCAPED_SLASHES),
             file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
         );
         $this->runRemoveCommand($scenarioName);
@@ -115,7 +115,7 @@ class VersionConstraintTest extends TestCase
                         'url' => '../../../'
                     ]
                 ]
-            ]),
+            ], JSON_PRETTY_PRINT ^ JSON_UNESCAPED_SLASHES),
             file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json')
         );
     }
