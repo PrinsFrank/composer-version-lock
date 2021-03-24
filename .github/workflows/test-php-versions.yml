@@ -1,4 +1,4 @@
-name: Execute tests with all PHP versions
+name: Test all PHP versions
 
 on:
   push:
