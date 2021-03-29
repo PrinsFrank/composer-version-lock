@@ -128,7 +128,7 @@ class VersionConstraintTest extends TestCase
         $command = 'cd ' . __DIR__ . '/scenarios ' .
             '&& rm -rf vendor' .
             '&& rm -f ' . $scenarioName . '.lock' .
-            '&& env COMPOSER=' . $scenarioName . '.json composer i 2>/dev/null';
+            '&& env COMPOSER=' . $scenarioName . '.json composer install 2>/dev/null';
 
         shell_exec($command);
     }
