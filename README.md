@@ -88,3 +88,13 @@ A good strategy here can be to use a grace period as follows:
 3. After a while the version constraint for both the old and new versions should live in all branches. You can now require the new version `2.0.6`
 
 > When the plugin is removed with the command ```composer remove prinsfrank/composer-version-lock```, the ```composer-version``` and ```composer-suggest``` settings in the ```extra``` section in the composer.json are also cleaned up. When the remaining extra section is then empty, it is removed.
+
+## Developing
+
+If you want to improve this plugin and create a PR you're more than welcome to do so!
+
+To have autocomplete when developing locally, run ```composer u``` to switch to the most recent composer/composer version, and ```composer u --prefer-lowest``` to switch to the first composer/composer version.
+
+To actually test the package, run ```composer self-update {VERSION}``` to switch to the composer version the system is using. 
+
+Tests can be run with ```composer test``` or ```vendor/bin/phpunit```, and are automatically run on a push or PR to master for every stable composer version and every PHP version.
