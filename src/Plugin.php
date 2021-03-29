@@ -97,10 +97,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 unset($config[Schema::EXTRA_KEY]);
             }
             $configFile->write($config);
+            return;
         }
 
-        $configSource->removeConfigSetting(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
-        $configSource->removeConfigSetting(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
+        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
 
         if (array_key_exists(Schema::EXTRA_KEY, $configFile->read())
             && count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
