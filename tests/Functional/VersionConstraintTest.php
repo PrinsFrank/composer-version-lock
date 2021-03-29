@@ -16,7 +16,7 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
-        if (Semver::satisfies(Composer::VERSION, '^1.9 || ^2.0') === false) {
+        if (Semver::satisfies(Composer::VERSION, '>=1.9') === false) {
             self::markTestSkipped('Installing packages inside their source is only possible since v1.9 of Composer (https://github.com/composer/composer/issues/8254)');
         }
 
