@@ -45,7 +45,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = EventHelper::getEventMock();
-        $event->expects(self::once())->method('getInput')->willReturn("config 'extra.composer-version'");
+        $event->expects(self::exactly(2))->method('getInput')->willReturn("config 'extra.composer-version'");
         $plugin->onPreCommand($event);
         $this->addToAssertionCount(1);
     }
@@ -66,7 +66,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = EventHelper::getEventMock();
-        $event->expects(self::exactly(3))->method('getInput')->willReturn("update");
+        $event->expects(self::exactly(4))->method('getInput')->willReturn("update");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -98,7 +98,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = EventHelper::getEventMock();
-        $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(4))->method('getInput')->willReturn("install");
 
         $io->expects(self::once())->method('write')->with(
             [
@@ -130,7 +130,7 @@ class PluginTest extends TestCase
         $plugin->activate($composer, $io);
 
         $event = EventHelper::getEventMock();
-        $event->expects(self::exactly(3))->method('getInput')->willReturn("install");
+        $event->expects(self::exactly(4))->method('getInput')->willReturn("install");
         $event->expects(self::once())->method(EventHelper::getGetCommandName())->willReturn('install');
 
         $io->expects(self::once())->method('write')->with(
