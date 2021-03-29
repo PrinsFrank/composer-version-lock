@@ -54,6 +54,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPreCommand($event): void
     {
+        if (Command::isRemovingVersionLockPlugin($event->getInput())
+            && method_exists(PluginInterface::class, 'uninstall') === false) {
+            $this->uninstall($this->composer, $this->io); // On older versions of Composer the uninstall event is not triggered
+            return;
+        }
+
         if (Command::isSettingExpectedComposerVersion($event->getInput())
             || Command::isSettingSuggestedComposerVersion($event->getInput())
             || Command::isRemovingVersionLockPlugin($event->getInput())) {
