@@ -2,6 +2,8 @@
 
 namespace PrinsFrank\ComposerVersionLock\Tests\Functional;
 
+use Composer\Composer;
+use Composer\Semver\Semver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,6 +16,10 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
+        if (Semver::satisfies(Composer::VERSION, '^1.9.0') === false) {
+            self::markTestSkipped('Installing packages inside their source is only possible since v1.9 of Composer (https://github.com/composer/composer/issues/8254)');
+        }
+
         preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
         $this->currentVersion = $matches[0] ?? null;
     }
@@ -128,23 +134,23 @@ class VersionConstraintTest extends TestCase
         $command = 'cd ' . __DIR__ . '/scenarios ' .
             '&& rm -rf vendor' .
             '&& rm -f ' . $scenarioName . '.lock' .
-            '&& env COMPOSER=' . $scenarioName . '.json composer install 2>/dev/null';
+            '&& env COMPOSER=' . $scenarioName . '.json composer install';
 
         shell_exec($command);
     }
 
     private function runModifyingCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run');
     }
 
     private function runSafeCommand(string $scenarioName)
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate');
     }
 
     private function runRemoveCommand(string $scenarioName)
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock');
     }
 }
