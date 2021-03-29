@@ -90,8 +90,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         // Remove the composer version and suggest from the extra section in the composer file
         $configFile   = new JsonFile(Factory::getComposerFile(), null, $this->io);
         $configSource = new JsonConfigSource($configFile);
-        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
-        $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
+        if (method_exists($configSource, 'removeProperty') === false) {
+            $config = $configFile->read();
+            unset($config[Schema::EXTRA_KEY][Schema::COMPOSER_VERSION_CONSTRAINT_KEY], $config[Schema::EXTRA_KEY][Schema::COMPOSER_SUGGESTED_VERSION_KEY]);
+            if (count($config[Schema::EXTRA_KEY]) === 0) {
+                unset($config[Schema::EXTRA_KEY]);
+            }
+            $configFile->write($config);
+        }
+
+        $configSource->removeConfigSetting(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
+        $configSource->removeConfigSetting(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
 
         if (array_key_exists(Schema::EXTRA_KEY, $configFile->read())
             && count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
