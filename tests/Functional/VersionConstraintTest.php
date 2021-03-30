@@ -136,7 +136,7 @@ class VersionConstraintTest extends TestCase
      */
     private function runGetCommandLineVersion(): ?string
     {
-        return trim(shell_exec('composer --version | grep -Po \'[0-9]\.[0-9]\.[0-9]\''));
+        return trim(shell_exec('composer --version | grep -Po \'[0-9]+\.[0-9]+\.[0-9]+\''));
     }
 
     private function runInstall(string $scenarioName): void
