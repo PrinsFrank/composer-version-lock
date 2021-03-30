@@ -16,10 +16,9 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
-        if (Semver::satisfies(Composer::VERSION, '^1.9 || ^2.0') === false) {
+        $commandLineComposerVersion = $this->runGetCommandLineVersion();
+        if (Semver::satisfies($commandLineComposerVersion, '^1.9 || ^2.0') === false) {
             self::markTestSkipped('Installing packages inside their source is only possible since v1.9 of Composer (https://github.com/composer/composer/issues/8254)');
-        } else {
-            self::markTestSkipped(Composer::VERSION);
         }
 
         preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
@@ -131,6 +130,14 @@ class VersionConstraintTest extends TestCase
         );
     }
 
+    /**
+     * @return string|null When using the Composer::Version constant the installed dependency version nr is returned.
+     */
+    private function runGetCommandLineVersion(): ?string
+    {
+        return trim(shell_exec('composer --version | grep -Po \'[0-9]\.[0-9]\.[0-9]\''));
+    }
+
     private function runInstall(string $scenarioName): void
     {
         $command = 'cd ' . __DIR__ . '/scenarios ' .
@@ -146,12 +153,12 @@ class VersionConstraintTest extends TestCase
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run');
     }
 
-    private function runSafeCommand(string $scenarioName)
+    private function runSafeCommand(string $scenarioName): ?string
     {
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate');
     }
 
-    private function runRemoveCommand(string $scenarioName)
+    private function runRemoveCommand(string $scenarioName): ?string
     {
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock');
     }
