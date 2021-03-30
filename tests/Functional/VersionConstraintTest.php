@@ -16,13 +16,10 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
-        $commandLineComposerVersion = $this->runGetCommandLineVersion();
-        if (Semver::satisfies($commandLineComposerVersion, '^2.0') === false) {
+        $this->currentVersion = $this->runGetCommandLineVersion();
+        if (Semver::satisfies($this->currentVersion, '^2.0') === false) {
             self::markTestSkipped('Installing packages inside their source is only possible since v2.0 of Composer (https://github.com/composer/composer/issues/8254)');
         }
-
-        preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
-        $this->currentVersion = $matches[0] ?? null;
     }
 
     public function testFailsWhenNoVersionSet(): void
