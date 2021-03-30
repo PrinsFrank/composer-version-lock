@@ -109,6 +109,7 @@ class VersionConstraintTest extends TestCase
             )
         );
         $this->runRemoveCommand($scenarioName);
+        sleep(10);
         static::assertSame(
             [
                 'name' => 'foo/bar',
