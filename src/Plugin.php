@@ -54,6 +54,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPreCommand($event): void
     {
+        if (Command::isRemovingVersionLockPlugin($event->getInput())
+            && method_exists(PluginInterface::class, 'uninstall') === false) {
+            $this->uninstall($this->composer, $this->io); // On older versions of Composer the uninstall event is not triggered
+            return;
+        }
+
         if (Command::isSettingExpectedComposerVersion($event->getInput())
             || Command::isSettingSuggestedComposerVersion($event->getInput())
             || Command::isRemovingVersionLockPlugin($event->getInput())) {
@@ -81,13 +87,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
+        // Remove the composer version and suggest from the extra section in the composer file
         $configFile   = new JsonFile(Factory::getComposerFile(), null, $this->io);
         $configSource = new JsonConfigSource($configFile);
         if (method_exists($configSource, 'removeProperty') === false) {
-            return; // This version of composer doesn't have an easy method to modify the composer.json file
+            $config = $configFile->read();
+            unset($config[Schema::EXTRA_KEY][Schema::COMPOSER_VERSION_CONSTRAINT_KEY], $config[Schema::EXTRA_KEY][Schema::COMPOSER_SUGGESTED_VERSION_KEY]);
+            if (count($config[Schema::EXTRA_KEY]) === 0) {
+                unset($config[Schema::EXTRA_KEY]);
+            }
+            $configFile->write($config);
+            return;
         }
 
-        // Remove the composer version and suggest from the extra section in the composer file
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY);
         $configSource->removeProperty(Schema::EXTRA_KEY . '.' . Schema::COMPOSER_SUGGESTED_VERSION_KEY);
 
