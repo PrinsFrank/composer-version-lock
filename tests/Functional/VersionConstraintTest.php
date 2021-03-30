@@ -2,6 +2,8 @@
 
 namespace PrinsFrank\ComposerVersionLock\Tests\Functional;
 
+use Composer\Composer;
+use Composer\Semver\Semver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,6 +16,11 @@ class VersionConstraintTest extends TestCase
 
     protected function setUp(): void
     {
+        $commandLineComposerVersion = $this->runGetCommandLineVersion();
+        if (Semver::satisfies($commandLineComposerVersion, '^2.0') === false) {
+            self::markTestSkipped('Installing packages inside their source is only possible since v2.0 of Composer (https://github.com/composer/composer/issues/8254)');
+        }
+
         preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
         $this->currentVersion = $matches[0] ?? null;
     }
@@ -72,12 +79,75 @@ class VersionConstraintTest extends TestCase
         );
     }
 
+    public function testCleansUpWhenRemovingPackage(): void
+    {
+        $this->runInstall($scenarioName = 'clean-up');
+        static::assertSame(
+            [
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require' => [
+                    'prinsfrank/composer-version-lock' => '*',
+                    'composer/semver' => '*'
+                ],
+                'extra' => [
+                    'composer-version' => '*',
+                    'composer-suggest' => '2.0.10'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ],
+            json_decode(
+                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
+                true
+            )
+        );
+        $this->runRemoveCommand($scenarioName);
+        static::assertSame(
+            [
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require' => [
+                    'composer/semver' => '*'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ],
+            json_decode(
+                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
+                true
+            )
+        );
+    }
+
+    /**
+     * @return string|null When using the Composer::Version constant the installed dependency version nr is returned.
+     */
+    private function runGetCommandLineVersion(): ?string
+    {
+        return trim(shell_exec('composer --version | grep -Po \'[0-9]\.[0-9]\.[0-9]\''));
+    }
+
     private function runInstall(string $scenarioName): void
     {
         $command = 'cd ' . __DIR__ . '/scenarios ' .
             '&& rm -rf vendor' .
             '&& rm -f ' . $scenarioName . '.lock' .
-            '&& env COMPOSER=' . $scenarioName . '.json composer i 2>/dev/null';
+            '&& env COMPOSER=' . $scenarioName . '.json composer install';
 
         shell_exec($command);
     }
@@ -87,8 +157,13 @@ class VersionConstraintTest extends TestCase
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run 2>/dev/null');
     }
 
-    private function runSafeCommand(string $scenarioName)
+    private function runSafeCommand(string $scenarioName): ?string
     {
         return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate 2>/dev/null');
+    }
+
+    private function runRemoveCommand(string $scenarioName): ?string
+    {
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock 2>/dev/null');
     }
 }

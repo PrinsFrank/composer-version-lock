@@ -1,0 +1,21 @@
+{
+    "name": "foo/bar",
+    "description": "Clean up",
+    "type": "metapackage",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "require": {
+        "prinsfrank/composer-version-lock": "*",
+        "composer/semver": "*"
+    },
+    "extra": {
+        "composer-version": "*",
+        "composer-suggest": "2.0.10"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../"
+        }
+    ]
+}
