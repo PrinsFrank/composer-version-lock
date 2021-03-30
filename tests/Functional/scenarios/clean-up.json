@@ -5,7 +5,8 @@
     "minimum-stability": "dev",
     "license": "MIT",
     "require": {
-        "prinsfrank/composer-version-lock": "*"
+        "prinsfrank/composer-version-lock": "*",
+        "composer/semver": "*"
     },
     "extra": {
         "composer-version": "*",
