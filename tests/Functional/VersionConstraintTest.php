@@ -18,6 +18,8 @@ class VersionConstraintTest extends TestCase
     {
         if (Semver::satisfies(Composer::VERSION, '^1.9 || ^2.0') === false) {
             self::markTestSkipped('Installing packages inside their source is only possible since v1.9 of Composer (https://github.com/composer/composer/issues/8254)');
+        } else {
+            self::markTestSkipped(Composer::VERSION);
         }
 
         preg_match('/\d+.\d+.\d+/', shell_exec('composer --version'), $matches);
