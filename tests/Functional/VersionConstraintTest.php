@@ -109,7 +109,6 @@ class VersionConstraintTest extends TestCase
             )
         );
         $this->runRemoveCommand($scenarioName);
-        sleep(10);
         static::assertSame(
             [
                 'name' => 'foo/bar',
@@ -117,6 +116,7 @@ class VersionConstraintTest extends TestCase
                 'type' => 'metapackage',
                 'minimum-stability' => 'dev',
                 'license' => 'MIT',
+                'require' => [],
                 'repositories' => [
                     [
                         'type' => 'path',
