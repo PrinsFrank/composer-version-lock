@@ -40,5 +40,7 @@ jobs:
         run: mv tests/* ../tests/
       - name: Point phpunit to the new test directory
         run: sed -i 's/>.\/tests/>..\/tests/' phpunit.xml.dist
+      - name: Point the path repository strings in the scenario files to the new location
+        run: ls ../
       - name: Run Functional tests
         run: vendor/bin/phpunit --testsuite Functional
