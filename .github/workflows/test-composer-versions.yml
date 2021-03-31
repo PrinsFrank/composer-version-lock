@@ -42,10 +42,10 @@ jobs:
         run: sed -i 's/>.\/tests/>..\/tests/' phpunit.xml.dist
       - name: Point the path repository strings in the scenario files to the new location
         run: |
-          sed -i 's/"..\/..\/..\/"/"composer-version-lock"/' ../tests/Functional/scenarios/clean-up.json
-          sed -i 's/"..\/..\/..\/"/"composer-version-lock"/' ../tests/Functional/scenarios/incorrect-suggested-version.json
-          sed -i 's/"..\/..\/..\/"/"composer-version-lock"/' ../tests/Functional/scenarios/no-version-set.json
-          sed -i 's/"..\/..\/..\/"/"composer-version-lock"/' ../tests/Functional/scenarios/passing-wildcard-version.json
-          sed -i 's/"..\/..\/..\/"/"composer-version-lock"/' ../tests/Functional/scenarios/wrong-version.json
+          sed -i 's/"..\/..\/..\/"/"..\/composer-version-lock"/' ../tests/Functional/scenarios/clean-up.json
+          sed -i 's/"..\/..\/..\/"/"..\/composer-version-lock"/' ../tests/Functional/scenarios/incorrect-suggested-version.json
+          sed -i 's/"..\/..\/..\/"/"..\/composer-version-lock"/' ../tests/Functional/scenarios/no-version-set.json
+          sed -i 's/"..\/..\/..\/"/"..\/composer-version-lock"/' ../tests/Functional/scenarios/passing-wildcard-version.json
+          sed -i 's/"..\/..\/..\/"/"..\/composer-version-lock"/' ../tests/Functional/scenarios/wrong-version.json
       - name: Run Functional tests
         run: vendor/bin/phpunit --testsuite Functional
