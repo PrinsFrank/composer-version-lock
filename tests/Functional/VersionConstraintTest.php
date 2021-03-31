@@ -3,7 +3,6 @@
 namespace PrinsFrank\ComposerVersionLock\Tests\Functional;
 
 use Composer\Composer;
-use Composer\Semver\Semver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,9 +16,6 @@ class VersionConstraintTest extends TestCase
     protected function setUp(): void
     {
         $this->currentVersion = $this->runGetCommandLineVersion();
-        if (Semver::satisfies($this->currentVersion, '^2.0') === false) {
-            self::markTestSkipped('Installing packages inside their source is only possible since v2.0 of Composer (https://github.com/composer/composer/issues/8254)');
-        }
     }
 
     public function testFailsWhenNoVersionSet(): void
