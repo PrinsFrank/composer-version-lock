@@ -145,16 +145,16 @@ class VersionConstraintTest extends TestCase
 
     private function runModifyingCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run');
     }
 
     private function runSafeCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate');
     }
 
     private function runRemoveCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock');
     }
 }
