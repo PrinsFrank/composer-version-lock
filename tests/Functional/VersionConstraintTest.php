@@ -75,6 +75,8 @@ class VersionConstraintTest extends TestCase
     public function testCleansUpWhenRemovingPackage(): void
     {
         $this->runInstall($scenarioName = 'clean-up');
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
         static::assertSame(
             [
                 'name' => 'foo/bar',
@@ -97,14 +99,10 @@ class VersionConstraintTest extends TestCase
                     ]
                 ]
             ],
-            json_decode(
-                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
-                true
-            )
+            $actual
         );
         $this->runRemoveCommand($scenarioName);
         $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
-        // Remove path trickery for legacy composer versions
         $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
         static::assertSame(
             [
