@@ -103,6 +103,8 @@ class VersionConstraintTest extends TestCase
             )
         );
         $this->runRemoveCommand($scenarioName);
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual = str_replace('composer-version-lock', '',  $actual); // Remove path trickery for legacy composer versions
         static::assertSame(
             [
                 'name' => 'foo/bar',
@@ -120,10 +122,7 @@ class VersionConstraintTest extends TestCase
                     ]
                 ]
             ],
-            json_decode(
-                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
-                true
-            )
+            $actual
         );
     }
 
