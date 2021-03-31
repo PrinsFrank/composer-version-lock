@@ -28,6 +28,12 @@ jobs:
         with:
           php-version: 7.2 # Currently supported by all Composer versions
           coverage: none
+      - name: Make new test folder outside the current project
+        run: mkdir ../tests
+      - name: Move functional test folder outside of project root so older versions of composer allow installation
+        run: mv tests/* ../tests/
+      - name: Point phpunit to the new test directory
+        run: sed -i 's/>.\/tests/>..\/tests/' phpunit.xml.dist
       - name: Set Composer version to specific version to test with
         run: composer self-update ${{ matrix.composer-version }}
       - name: Install dependencies
