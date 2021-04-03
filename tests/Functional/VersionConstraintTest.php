@@ -58,7 +58,7 @@ class VersionConstraintTest extends TestCase
     {
         $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
-            'This package requires composer version 1.0.0, Currently version is ' . $this->currentVersion . PHP_EOL .
+            'This package requires composer version 0.0.9, Currently version is ' . $this->currentVersion . PHP_EOL .
             'To change to the required version, run;' . PHP_EOL .
             '' . PHP_EOL .
             '    composer self-update 1.0.0' . PHP_EOL .
@@ -72,7 +72,7 @@ class VersionConstraintTest extends TestCase
     {
         $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
-            'This package requires composer version 1.0.0' . PHP_EOL .
+            'This package requires composer version 0.0.9' . PHP_EOL .
             '-> Continuing as the current action isn\'t modifying the lock file.' . PHP_EOL,
             $this->runSafeCommand($scenarioName)
         );
