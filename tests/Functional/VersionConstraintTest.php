@@ -156,7 +156,7 @@ class VersionConstraintTest extends TestCase
 
     private function runSafeCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer install --dry-run');
     }
 
     private function runRemoveCommand(string $scenarioName): ?string
