@@ -61,7 +61,7 @@ class VersionConstraintTest extends TestCase
             'This package requires composer version 0.0.9, Currently version is ' . $this->currentVersion . PHP_EOL .
             'To change to the required version, run;' . PHP_EOL .
             '' . PHP_EOL .
-            '    composer self-update 1.0.0' . PHP_EOL .
+            '    composer self-update 0.0.9' . PHP_EOL .
             '' . PHP_EOL,
             $this->runModifyingCommand($scenarioName)
         );
