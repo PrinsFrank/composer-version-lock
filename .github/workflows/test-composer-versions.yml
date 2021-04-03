@@ -12,8 +12,6 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: update composer
-        run: composer self-update
       - id: set-matrix
         run: echo "::set-output name=matrix::{\"composer-version\":[\"$(composer show composer/composer -all | grep 'versions' | grep -Po '[0-9]+.[0-9]+.[0-9]+' | sort | uniq | perl -p -e 's/\n/","/' | sed 's/,"$//')]}"
   test:
