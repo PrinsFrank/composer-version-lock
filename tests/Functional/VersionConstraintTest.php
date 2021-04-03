@@ -54,7 +54,7 @@ class VersionConstraintTest extends TestCase
         );
     }
 
-    public function testWarnsFailsWhenUsingWrongComposerVersion(): void
+    public function testFailsWhenUsingWrongComposerVersion(): void
     {
         $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
@@ -65,6 +65,12 @@ class VersionConstraintTest extends TestCase
             '' . PHP_EOL,
             $this->runModifyingCommand($scenarioName)
         );
+    }
+
+
+    public function testWarnsWhenUsingWrongComposerVersion(): void
+    {
+        $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
             'This package requires composer version 1.0.0' . PHP_EOL .
             '-> Continuing as the current action isn\'t modifying the lock file.' . PHP_EOL,
