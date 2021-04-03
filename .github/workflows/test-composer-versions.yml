@@ -12,8 +12,6 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: update composer
-        run: composer self-update
       - id: set-matrix
         run: echo "::set-output name=matrix::{\"composer-version\":[\"$(composer show composer/composer -all | grep 'versions' | grep -Po '[0-9]+.[0-9]+.[0-9]+' | sort | uniq | perl -p -e 's/\n/","/' | sed 's/,"$//')]}"
   test:
@@ -34,5 +32,18 @@ jobs:
         run: composer install --prefer-dist --no-progress
       - name: Run Unit tests
         run: vendor/bin/phpunit --testsuite Unit
+      - name: Make new test folder outside the current project
+        run: mkdir ../tests
+      - name: Move functional test folder outside of project root so older versions of composer allow installation
+        run: mv tests/* ../tests/
+      - name: Point phpunit to the new test directory
+        run: sed -i 's/>.\/tests/>..\/tests/' phpunit.xml.dist
+      - name: Point the path repository strings in the scenario files to the new location
+        run: |
+          sed -i 's/"..\/..\/..\/"/"..\/..\/..\/composer-version-lock"/' ../tests/Functional/scenarios/clean-up.json
+          sed -i 's/"..\/..\/..\/"/"..\/..\/..\/composer-version-lock"/' ../tests/Functional/scenarios/incorrect-suggested-version.json
+          sed -i 's/"..\/..\/..\/"/"..\/..\/..\/composer-version-lock"/' ../tests/Functional/scenarios/no-version-set.json
+          sed -i 's/"..\/..\/..\/"/"..\/..\/..\/composer-version-lock"/' ../tests/Functional/scenarios/passing-wildcard-version.json
+          sed -i 's/"..\/..\/..\/"/"..\/..\/..\/composer-version-lock"/' ../tests/Functional/scenarios/wrong-version.json
       - name: Run Functional tests
         run: vendor/bin/phpunit --testsuite Functional

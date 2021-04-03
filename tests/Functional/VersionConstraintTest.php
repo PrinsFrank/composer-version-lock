@@ -3,7 +3,6 @@
 namespace PrinsFrank\ComposerVersionLock\Tests\Functional;
 
 use Composer\Composer;
-use Composer\Semver\Semver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,9 +16,6 @@ class VersionConstraintTest extends TestCase
     protected function setUp(): void
     {
         $this->currentVersion = $this->runGetCommandLineVersion();
-        if (Semver::satisfies($this->currentVersion, '^2.0') === false) {
-            self::markTestSkipped('Installing packages inside their source is only possible since v2.0 of Composer (https://github.com/composer/composer/issues/8254)');
-        }
     }
 
     public function testFailsWhenNoVersionSet(): void
@@ -58,19 +54,25 @@ class VersionConstraintTest extends TestCase
         );
     }
 
-    public function testWarnsFailsWhenUsingWrongComposerVersion(): void
+    public function testFailsWhenUsingWrongComposerVersion(): void
     {
         $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
-            'This package requires composer version 1.0.0, Currently version is ' . $this->currentVersion . PHP_EOL .
+            'This package requires composer version 0.0.9, Currently version is ' . $this->currentVersion . PHP_EOL .
             'To change to the required version, run;' . PHP_EOL .
             '' . PHP_EOL .
-            '    composer self-update 1.0.0' . PHP_EOL .
+            '    composer self-update 0.0.9' . PHP_EOL .
             '' . PHP_EOL,
             $this->runModifyingCommand($scenarioName)
         );
+    }
+
+
+    public function testWarnsWhenUsingWrongComposerVersion(): void
+    {
+        $this->runInstall($scenarioName = 'wrong-version');
         static::assertStringContainsString(
-            'This package requires composer version 1.0.0' . PHP_EOL .
+            'This package requires composer version 0.0.9' . PHP_EOL .
             '-> Continuing as the current action isn\'t modifying the lock file.' . PHP_EOL,
             $this->runSafeCommand($scenarioName)
         );
@@ -79,6 +81,8 @@ class VersionConstraintTest extends TestCase
     public function testCleansUpWhenRemovingPackage(): void
     {
         $this->runInstall($scenarioName = 'clean-up');
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
         static::assertSame(
             [
                 'name' => 'foo/bar',
@@ -101,12 +105,11 @@ class VersionConstraintTest extends TestCase
                     ]
                 ]
             ],
-            json_decode(
-                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
-                true
-            )
+            $actual
         );
         $this->runRemoveCommand($scenarioName);
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
         static::assertSame(
             [
                 'name' => 'foo/bar',
@@ -124,10 +127,7 @@ class VersionConstraintTest extends TestCase
                     ]
                 ]
             ],
-            json_decode(
-                file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),
-                true
-            )
+            $actual
         );
     }
 
@@ -151,16 +151,16 @@ class VersionConstraintTest extends TestCase
 
     private function runModifyingCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer update nothing --dry-run');
     }
 
     private function runSafeCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer validate 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer install --dry-run');
     }
 
     private function runRemoveCommand(string $scenarioName): ?string
     {
-        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock 2>/dev/null');
+        return shell_exec('cd ' . __DIR__ . '/scenarios && env COMPOSER=' . $scenarioName . '.json composer remove prinsfrank/composer-version-lock');
     }
 }

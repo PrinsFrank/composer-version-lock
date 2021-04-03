@@ -8,7 +8,7 @@
         "prinsfrank/composer-version-lock": "*"
     },
     "extra": {
-        "composer-version": "1.0.0"
+        "composer-version": "0.0.9"
     },
     "repositories": [
         {
