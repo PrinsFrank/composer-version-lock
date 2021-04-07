@@ -92,7 +92,7 @@ A good strategy here can be to use a grace period as follows:
 > When the plugin is removed with the command ```composer remove prinsfrank/composer-version-lock```, the ```composer-version``` and ```composer-suggest``` settings in the ```extra``` section in the composer.json are also cleaned up. When the remaining extra section is then empty, it is removed.
 
 ## Examples of changes to lock files between Composer versions
-- The url of the readme section changed between [https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file](https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file){:target="_blank" rel="noreferrer noopener"} and [https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies){:target="_blank" rel="noreferrer noopener"}
+- The url of the readme section changed between [https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file](https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file) and [https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies)
 - The "hash" section was renamed to "content-hash" or the other way round.
 - The "hash" or "content-hash" was recalculated even when the rest of the composer.lock hasn't changed.
 - The "support" section was added or removed with individual packages.
