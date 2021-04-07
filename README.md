@@ -13,6 +13,8 @@ Even when the only changes between branches is that two different packages have 
 
 This plugin makes it possible to share the required composer version in the ```composer.json``` file. 
 
+Read more about it [in a post on my personal blog](https://prinsfrank.nl/2021/04/07/Seemingly-random-Composer-lock-changes)
+
 ## Getting started
 
 to include this package, simply run;
@@ -88,6 +90,16 @@ A good strategy here can be to use a grace period as follows:
 3. After a while the version constraint for both the old and new versions should live in all branches. You can now require the new version `2.0.6`
 
 > When the plugin is removed with the command ```composer remove prinsfrank/composer-version-lock```, the ```composer-version``` and ```composer-suggest``` settings in the ```extra``` section in the composer.json are also cleaned up. When the remaining extra section is then empty, it is removed.
+
+## Examples of changes to lock files between Composer versions
+- The url of the readme section changed between [https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file](https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file){:target="_blank" rel="noreferrer noopener"} and [https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies){:target="_blank" rel="noreferrer noopener"}
+- The "hash" section was renamed to "content-hash" or the other way round.
+- The "hash" or "content-hash" was recalculated even when the rest of the composer.lock hasn't changed.
+- The "support" section was added or removed with individual packages.
+- The "time" section has now added or removed a "T" and timezone offset indicating localized timestamps with individual packages.
+- A "funding" section was added or removed with individual packages.
+- A "plugin-api-version" section was added or removed.
+- and more ...
 
 ## Developing
 
