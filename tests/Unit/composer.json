@@ -1,0 +1,10 @@
+{
+    "name": "foo/bar",
+    "description": "Extra composer.json file for UTs as Composer doesnt DI the composer file",
+    "type": "metapackage",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "require": {
+        "prinsfrank/composer-version-lock": "*"
+    }
+}

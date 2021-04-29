@@ -18,11 +18,21 @@ class VersionConstraintTest extends TestCase
         $this->currentVersion = $this->runGetCommandLineVersion();
     }
 
+    public function testWarnsWhenPackageNotCurrentlyRequired(): void
+    {
+        $this->runInstall('passing-wildcard-version');
+        static::assertStringContainsString(
+            'The "prinsfrank/composer-version-lock" plugin is installed but not required in this project' . PHP_EOL .
+            '-> Run "composer install" to install the current set of packages or ignore this message.',
+            $this->runModifyingCommand('plugin-not-required')
+        );
+    }
+
     public function testFailsWhenNoVersionSet(): void
     {
         $this->runInstall($scenarioName = 'no-version-set');
         static::assertStringContainsString(
-            'The "prinsfrank/composer-version-lock" package is required but the required version is not set' . PHP_EOL .
+            'The "prinsfrank/composer-version-lock" plugin is required but the required version is not set' . PHP_EOL .
             'To use your current version as the new project default, execute;' . PHP_EOL .
             '' . PHP_EOL .
             '    composer config extra.composer-version ' . $this->currentVersion . PHP_EOL .
@@ -66,7 +76,6 @@ class VersionConstraintTest extends TestCase
             $this->runModifyingCommand($scenarioName)
         );
     }
-
 
     public function testWarnsWhenUsingWrongComposerVersion(): void
     {

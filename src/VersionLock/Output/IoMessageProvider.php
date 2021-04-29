@@ -4,11 +4,20 @@ namespace PrinsFrank\ComposerVersionLock\VersionLock\Output;
 
 use Composer\Composer;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
+use PrinsFrank\ComposerVersionLock\VersionLock\Config\Package;
 use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
 use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
 
 class IoMessageProvider implements MessageProviderInterface
 {
+    public function getPluginNotRequiredMessage(): array
+    {
+        return [
+            '<warning>The "' . Package::NAME . '" plugin is installed but not required in this project</warning>',
+            '<comment>-> Run "composer install" to install the current set of packages or ignore this message.</comment>'
+        ];
+    }
+
     public function getSuccessMessage(VersionLock $versionLock): array
     {
         return [
@@ -39,7 +48,7 @@ class IoMessageProvider implements MessageProviderInterface
     public function getMissingConfigMessage(): array
     {
         return [
-            '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
+            '<error>The "' . Package::NAME . '" plugin is required but the required version is not set</error>',
             '<comment>To use your current version as the new project default, execute;</comment>',
             '',
             '    composer ' . Command::CONFIG . ' ' . Schema::EXTRA_KEY . '.' . Schema::COMPOSER_VERSION_CONSTRAINT_KEY . ' ' . Composer::VERSION,

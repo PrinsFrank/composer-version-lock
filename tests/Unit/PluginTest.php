@@ -5,9 +5,7 @@ namespace PrinsFrank\ComposerVersionLock\Tests\Unit;
 use Composer\Composer;
 use Composer\IO\ConsoleIO;
 use Composer\Package\RootPackage;
-use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
-use Composer\Plugin\PreCommandRunEvent;
 use PHPUnit\Framework\TestCase;
 use PrinsFrank\ComposerVersionLock\Plugin;
 use PrinsFrank\ComposerVersionLock\Tests\Helpers\EventHelper;
@@ -19,6 +17,20 @@ use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
  */
 class PluginTest extends TestCase
 {
+    /**
+     * As the Composer factory directly looks for the environment variable to check the contents of the file,
+     * we have to overwrite it here and put the correct value back in the
+     */
+    protected function setUp(): void
+    {
+        putenv('COMPOSER=' . __DIR__ . '/composer.json');
+    }
+
+    protected function tearDown(): void
+    {
+        putenv('COMPOSER=' . dirname(__DIR__, 2) . '/composer.json');
+    }
+
     /**
      * @covers ::getSubscribedEvents
      */
@@ -70,7 +82,7 @@ class PluginTest extends TestCase
 
         $io->expects(self::once())->method('write')->with(
             [
-                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
+                '<error>The "prinsfrank/composer-version-lock" plugin is required but the required version is not set</error>',
                 '<comment>To use your current version as the new project default, execute;</comment>',
                 '',
                 '    composer config extra.composer-version ' . Composer::VERSION,
