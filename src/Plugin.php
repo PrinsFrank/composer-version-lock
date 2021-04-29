@@ -14,6 +14,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Plugin\PreCommandRunEvent;
 use Composer\Semver\Semver;
 use PrinsFrank\ComposerVersionLock\VersionLock\Command\Command;
+use PrinsFrank\ComposerVersionLock\VersionLock\Config\Package;
 use PrinsFrank\ComposerVersionLock\VersionLock\Config\Schema;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\MissingConfigException;
 use PrinsFrank\ComposerVersionLock\VersionLock\Exception\InvalidComposerVersionException;
@@ -63,6 +64,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (Command::isSettingExpectedComposerVersion($event->getInput())
             || Command::isSettingSuggestedComposerVersion($event->getInput())
             || Command::isRemovingVersionLockPlugin($event->getInput())) {
+            return;
+        }
+
+        if (Package::isCurrentlyRequired($this->io) === false) {
+            $this->io->write((new IoMessageProvider())->getPluginNotRequiredMessage());
             return;
         }
 

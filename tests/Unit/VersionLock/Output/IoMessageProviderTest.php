@@ -13,6 +13,21 @@ use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
 class IoMessageProviderTest extends TestCase
 {
     /**
+     * @covers ::getPluginNotRequiredMessage
+     */
+    public function testGetPluginNotRequiredMessage(): void
+    {
+        $provider = new IoMessageProvider();
+        static::assertSame(
+            [
+                '<warning>The "prinsfrank/composer-version-lock" plugin is installed but not required in this project</warning>',
+                '<comment>-> Run "composer install" to install the current set of packages or ignore this message.</comment>'
+            ],
+            $provider->getPluginNotRequiredMessage()
+        );
+    }
+
+    /**
      * @covers ::getSuccessMessage
      */
     public function testGetSuccessMessage(): void
@@ -87,7 +102,7 @@ class IoMessageProviderTest extends TestCase
         $provider = new IoMessageProvider();
         static::assertSame(
             [
-                '<error>The "prinsfrank/composer-version-lock" package is required but the required version is not set</error>',
+                '<error>The "prinsfrank/composer-version-lock" plugin is required but the required version is not set</error>',
                 '<comment>To use your current version as the new project default, execute;</comment>',
                 '',
                 '    composer config extra.composer-version ' . Composer::VERSION,

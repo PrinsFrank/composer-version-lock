@@ -6,6 +6,8 @@ use PrinsFrank\ComposerVersionLock\VersionLock\VersionLock;
 
 interface MessageProviderInterface
 {
+    public function getPluginNotRequiredMessage(): array;
+
     public function getSuccessMessage(VersionLock $versionLock): array;
 
     public function getWarningMessage(VersionLock $versionLock): array;
