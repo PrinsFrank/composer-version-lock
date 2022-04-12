@@ -56,8 +56,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onPreCommand($event): void
     {
         if (Command::isRemovingVersionLockPlugin($event->getInput())
-            && method_exists(PluginInterface::class, 'uninstall') === false) {
-            $this->uninstall($this->composer, $this->io); // On older versions of Composer the uninstall event is not triggered
+            && method_exists(PluginInterface::class, 'cleanup') === false) {
+            $this->cleanup();
             return;
         }
 
@@ -91,9 +91,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
     }
 
-    public function uninstall(Composer $composer, IOInterface $io): void
+    /**
+     * Remove the composer version and suggest from the extra section in the composer file
+     */
+    public function cleanup(): void
     {
-        // Remove the composer version and suggest from the extra section in the composer file
         $configFile   = new JsonFile(Factory::getComposerFile(), null, $this->io);
         $configSource = new JsonConfigSource($configFile);
         if (method_exists($configSource, 'removeProperty') === false) {
@@ -113,5 +115,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             && count($configFile->read()[Schema::EXTRA_KEY]) === 0) {
             $configSource->removeProperty(Schema::EXTRA_KEY);
         }
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // The uninstall logic is handled in the cleanup method as the uninstall method is not called consistently and in some versions also when installing in no-dev mode
     }
 }
