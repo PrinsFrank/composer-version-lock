@@ -99,7 +99,7 @@ class VersionConstraintTest extends TestCase
                 'type' => 'metapackage',
                 'minimum-stability' => 'dev',
                 'license' => 'MIT',
-                'require' => [
+                'require-dev' => [
                     'prinsfrank/composer-version-lock' => '*',
                     'composer/semver' => '*'
                 ],
@@ -126,7 +126,7 @@ class VersionConstraintTest extends TestCase
                 'type' => 'metapackage',
                 'minimum-stability' => 'dev',
                 'license' => 'MIT',
-                'require' => [
+                'require-dev' => [
                     'prinsfrank/composer-version-lock' => '*',
                     'composer/semver' => '*'
                 ],
