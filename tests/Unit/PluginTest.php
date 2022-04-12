@@ -167,7 +167,7 @@ class PluginTest extends TestCase
     }
 
     /**
-     * @covers ::uninstall
+     * @covers ::cleanup
      */
     public function testUninstall(): void
     {
@@ -175,6 +175,6 @@ class PluginTest extends TestCase
         $composer = $this->createMock(Composer::class);
         $composer->expects(self::never())->method(self::anything());
         $io = $this->createMock(ConsoleIO::class);
-        $plugin->uninstall($composer, $io);
+        $plugin->cleanup($composer, $io);
     }
 }

@@ -87,6 +87,64 @@ class VersionConstraintTest extends TestCase
         );
     }
 
+    public function testDoesntCleanUpWhenInNoDevMode(): void
+    {
+        $this->runInstall($scenarioName = 'no-cleanup-in-no-dev-mode');
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
+        static::assertSame(
+            [
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require-dev' => [
+                    'prinsfrank/composer-version-lock' => '*',
+                    'composer/semver' => '*'
+                ],
+                'extra' => [
+                    'composer-version' => '*',
+                    'composer-suggest' => '2.0.10'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ],
+            $actual
+        );
+        $this->runInstall($scenarioName, true);
+        $actual = json_decode(file_get_contents(__DIR__ . '/scenarios/' . $scenarioName . '.json'),true);
+        $actual['repositories'][0]['url'] = str_replace('composer-version-lock', '',  $actual['repositories'][0]['url']);
+        static::assertSame(
+            [
+                'name' => 'foo/bar',
+                'description' => 'Clean up',
+                'type' => 'metapackage',
+                'minimum-stability' => 'dev',
+                'license' => 'MIT',
+                'require-dev' => [
+                    'prinsfrank/composer-version-lock' => '*',
+                    'composer/semver' => '*'
+                ],
+                'extra' => [
+                    'composer-version' => '*',
+                    'composer-suggest' => '2.0.10'
+                ],
+                'repositories' => [
+                    [
+                        'type' => 'path',
+                        'url' => '../../../'
+                    ]
+                ]
+            ],
+            $actual
+        );
+    }
+
     public function testCleansUpWhenRemovingPackage(): void
     {
         $this->runInstall($scenarioName = 'clean-up');
@@ -148,12 +206,12 @@ class VersionConstraintTest extends TestCase
         return trim(shell_exec('composer --version | grep -Po \'[0-9]+\.[0-9]+\.[0-9]+\''));
     }
 
-    private function runInstall(string $scenarioName): void
+    private function runInstall(string $scenarioName, bool $noDev = false): void
     {
         $command = 'cd ' . __DIR__ . '/scenarios ' .
             '&& rm -rf vendor' .
             '&& rm -f ' . $scenarioName . '.lock' .
-            '&& env COMPOSER=' . $scenarioName . '.json composer install';
+            '&& env COMPOSER=' . $scenarioName . '.json composer install' . ($noDev ? ' --no-dev' : '');
 
         shell_exec($command);
     }
