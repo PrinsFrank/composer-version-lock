@@ -1,6 +1,6 @@
 > **Warning**
 > 
-> As the functionality provided by this package is [now fully provided by composer itself](https://github.com/composer/composer/pull/10313), this package is now abandoned. To migrate, execute the following commands.
+> As the functionality provided by this package is [now fully provided by composer itself](https://github.com/composer/composer/pull/10313)<sup>Thanks @szepeviktor!</sup>, this package is now abandoned. To migrate, execute the following commands.
 > 
 > As stated in the docs, it is a good idea to add a requirement to the plugin api, as the exact composer version wasn't available in versions before 2.2.0. 
 > ```shell
