@@ -13,7 +13,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "::set-output name=matrix::{\"composer-version\":[\"$(composer show composer/composer -all | grep 'versions' | grep -Po '[0-9]+.[0-9]+.[0-9]+' | sort | uniq | perl -p -e 's/\n/","/' | sed 's/,"$//')]}"
+        run: echo "::set-output name=matrix::{\"composer-version\":[\"$(composer show composer/composer -all | grep 'versions' | grep -Po '[2-9]+.[0-9]+.[0-9]+' | sort | uniq | perl -p -e 's/\n/","/' | sed 's/,"$//')]}"
   test:
     needs: get-all-available-composer-versions
     runs-on: ubuntu-latest
