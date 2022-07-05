@@ -1,10 +1,3 @@
-# Composer version lock
-
-[![Code Coverage](https://codecov.io/gh/PrinsFrank/composer-version-lock/branch/main/graph/badge.svg)](https://codecov.io/gh/PrinsFrank/composer-version-lock)
-[![Release](https://img.shields.io/github/v/release/PrinsFrank/composer-version-lock?semver)](https://github.com/PrinsFrank/composer-version-lock/releases)
-[![License](https://img.shields.io/github/license/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/blob/main/LICENSE)
-[![Open Issues](https://img.shields.io/github/issues-raw/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/issues)
-
 > **Warning**
 > 
 > As the functionality provided by this package is [now fully provided by composer itself](https://github.com/composer/composer/pull/10313), this package is now abandoned. To migrate, execute the following commands.
@@ -25,6 +18,26 @@
 > ```
 > 
 > After this command has run, the "composer-version" and "composer-suggest" keys should be automatically removed from the "extra" section in your composer.json and the entire section should be removed if no other keys are set. If not, remove these keys manually.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Composer version lock
+
+[![Code Coverage](https://codecov.io/gh/PrinsFrank/composer-version-lock/branch/main/graph/badge.svg)](https://codecov.io/gh/PrinsFrank/composer-version-lock)
+[![Release](https://img.shields.io/github/v/release/PrinsFrank/composer-version-lock?semver)](https://github.com/PrinsFrank/composer-version-lock/releases)
+[![License](https://img.shields.io/github/license/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/blob/main/LICENSE)
+[![Open Issues](https://img.shields.io/github/issues-raw/PrinsFrank/composer-version-lock)](https://github.com/PrinsFrank/composer-version-lock/issues)
 
 ## Why this plugin?
 
