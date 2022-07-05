@@ -4,12 +4,12 @@
 > 
 > As stated in the docs, it is a good idea to add a requirement to the plugin api, as the exact composer version wasn't available in versions before 2.2.0. 
 > ```shell
-> composer require composer-plugin-api:>=2.2.0
+> composer require "composer-plugin-api:>=2.2.0"
 > ```
 > 
 > Now you can add the requirement for the actual composer version:
 > ```shell
-> composer require composer:^2.3.9
+> composer require "composer:^2.3.9"
 > ```
 > 
 > And finally you can remove this package!
