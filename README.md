@@ -19,19 +19,6 @@
 > 
 > After this command has run, the "composer-version" and "composer-suggest" keys should be automatically removed from the "extra" section in your composer.json and the entire section should be removed if no other keys are set. If not, remove these keys manually.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Composer version lock
 
 [![Code Coverage](https://codecov.io/gh/PrinsFrank/composer-version-lock/branch/main/graph/badge.svg)](https://codecov.io/gh/PrinsFrank/composer-version-lock)
