@@ -1,3 +1,24 @@
+> **Warning**
+> 
+> As the functionality provided by this package is [now fully provided by composer itself](https://github.com/composer/composer/pull/10313), this package is now abandoned. To migrate, execute the following commands.
+> 
+> As stated in the docs, it is a good idea to add a requirement to the plugin api, as the exact composer version wasn't available in versions before 2.2.0. 
+> ```shell
+> composer require composer-plugin-api:>=2.2.0
+> ```
+> 
+> Now you can add the requirement for the actual composer version:
+> ```shell
+> composer require composer:^2.3.9
+> ```
+> 
+> And finally you can remove this package!
+> ```shell
+> composer remove prinsfrank/composer-version-lock
+> ```
+> 
+> After this command has run, the "composer-version" and "composer-suggest" keys should be automatically removed from the "extra" section in your composer.json and the entire section should be removed if no other keys are set. If not, remove these keys manually.
+
 # Composer version lock
 
 [![Code Coverage](https://codecov.io/gh/PrinsFrank/composer-version-lock/branch/main/graph/badge.svg)](https://codecov.io/gh/PrinsFrank/composer-version-lock)
