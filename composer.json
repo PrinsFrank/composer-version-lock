@@ -1,6 +1,6 @@
 {
     "name": "prinsfrank/composer-version-lock",
-    "description": "Locks composer to a specific version for a project",
+    "description": "Functionality now provided by composer itself; Locks composer to a specific version for a project",
     "type": "composer-plugin",
     "license": "MIT",
     "extra": {
