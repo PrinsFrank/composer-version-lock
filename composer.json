@@ -6,6 +6,7 @@
     "extra": {
         "class": "PrinsFrank\\ComposerVersionLock\\Plugin"
     },
+    "abandoned": "composer",
     "require": {
         "php": ">=7.2",
         "composer-plugin-api": "^1.0 || ^2.0",
